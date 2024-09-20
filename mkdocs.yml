@@ -1,7 +1,7 @@
 site_name: GIS Career Entry Guide
 nav:
   - Index: 
-    - GIS入行指南: GIS入行指南.md
+    - GIS入行指南: index.md
   - 前言: 
     - 前言: GIS入行指南/前言.md
   - 内容规划: 
