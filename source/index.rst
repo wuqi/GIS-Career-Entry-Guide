@@ -1,23 +1,53 @@
-.. GIS_Career_Entry_Guide documentation master file, created by
-   sphinx-quickstart on Tue Sep 24 17:38:04 2024.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-GIS 入行指南
-====================================
+################
+GIS入行指南
+################
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    :maxdepth: 3
 
-   前言
-   内容规划
-   learning/index
-   tools/index
-   data/index
-   结语
+    前言
+    内容规划
+    书籍和课程推荐
+    工具介绍
+    数据
+    结语
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
+
+
+-  `"前言" <GIS/GIS入行指南/前言.rst>`__
+
+-  `"内容规划" <GIS/GIS入行指南/内容规划.rst>`__
+
+-  `"书籍和课程推荐" <GIS/GIS入行指南/书籍和课程推荐.rst>`__
+
+-  `"工具" <GIS/GIS入行指南/工具.rst>`__
+
+   -  `"关于电脑" <GIS/GIS入行指南/关于电脑.rst>`__
+   -  `"信息检索" <GIS/GIS入行指南/信息检索.rst>`__
+   -  `"科学上网" <GIS/GIS入行指南/科学上网.rst>`__
+   -  `"命令行" <GIS/GIS入行指南/命令行.rst>`__
+   -  `"IDE" <GIS/GIS入行指南/IDE.rst>`__
+   -  `"版本控制工具" <GIS/GIS入行指南/版本控制工具.rst>`__
+   -  `"正则表达式" <GIS/GIS入行指南/正则表达式.rst>`__
+   -  `"Docker" <GIS/GIS入行指南/Docker.rst>`__
+   -  `"笔记工具" <GIS/GIS入行指南/笔记工具.rst>`__
+   -  `"推荐软件" <GIS/GIS入行指南/推荐软件.rst>`__
+
+-  `"数据" <GIS/GIS入行指南/数据.rst>`__
+
+   -  `"文本文件和二进制文件" <GIS/GIS入行指南/文本文件和二进制文件.rst>`__
+   -  `"数据交换格式" <GIS/GIS入行指南/数据交换格式.rst>`__
+   -  `"矢量数据模型" <GIS/GIS入行指南/矢量数据模型.rst>`__
+   -  `"栅格数据模型" <GIS/GIS入行指南/栅格数据模型.rst>`__
+   -  `"三维数据模型" <GIS/GIS入行指南/三维数据模型.rst>`__
+   -  `"地图服务" <GIS/GIS入行指南/地图服务.rst>`__
+   -  `"数据获取" <GIS/GIS入行指南/数据获取.rst>`__
+   -  `"关于保密" <GIS/GIS入行指南/关于保密.rst>`__
+
+-  `"结语" <GIS/GIS入行指南/结语.rst>`__
+
+‍
