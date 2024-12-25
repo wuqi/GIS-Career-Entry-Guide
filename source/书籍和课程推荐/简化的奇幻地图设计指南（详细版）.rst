@@ -615,25 +615,25 @@ https://web.archive.org/web/20200117105900/http://writing.chrisvotey.com/wb-ge/
 
 .. |image| image:: assets/image-20240617174542-ufqerwz.png
 .. |image1| image:: assets/image-20240617174557-b7khx4n.png
-.. |image2| image:: assets/image-20240617174609-vqln16d.png
-.. |image3| image:: assets/image-20240619143707-d4cpij8.png
-.. |image4| image:: assets/image-20240619160247-euwfjyi.png
-.. |image5| image:: assets/image-20240619160756-rjwfml3.png
-.. |image6| image:: assets/image-20240619160810-iu9mkxa.png
-.. |image7| image:: assets/image-20240619160821-rnsdx02.png
-.. |image8| image:: assets/image-20240619160836-r6t6kqd.png
-.. |image9| image:: assets/image-20240619160850-q9gseh9.png
-.. |image10| image:: assets/image-20240619160904-iebchrg.png
-.. |image11| image:: assets/image-20240619160949-gbewvgi.png
-.. |image12| image:: assets/image-20240619160821-rnsdx02.png
-.. |image13| image:: assets/image-20240619161018-5henjs3.png
-.. |image14| image:: assets/image-20240619161029-k1sw5sd.png
-.. |image15| image:: assets/image-20240619161146-zv6mejk.png
-.. |image16| image:: assets/image-20240619161157-sgkfjg9.png
-.. |image17| image:: assets/image-20240619161207-srh3khi.png
-.. |image18| image:: assets/image-20240619161223-xgy60pl.png
-.. |image19| image:: assets/image-20240619161242-h4tsovt.png
-.. |image20| image:: assets/image-20240619161254-sabmlvq.png
-.. |image21| image:: assets/image-20240619161307-kvhv7kk.png
-.. |image22| image:: assets/image-20240619161329-l0gfcvo.png
-.. |image23| image:: assets/image-20240619161342-ok7w156.png
+.. |image2| 
+.. |image3| image:: 
+.. |image4| image:: 
+.. |image5| image:: 
+.. |image6| image:: 
+.. |image7| image:: 
+.. |image8| image:: 
+.. |image9| image:: 
+.. |image10| image:: assets/.png
+.. |image11| image:: assets/.png
+.. |image12| image:: assets/.png
+.. |image13| image:: assets/.png
+.. |image14| image:: assets/.png
+.. |image15| image:: assets/.png
+.. |image16| image:: assets/.png
+.. |image17| image:: assets/.png
+.. |image18| image:: assets/.png
+.. |image19| image:: assets/.png
+.. |image20| image:: assets/.png
+.. |image21| image:: assets/.png
+.. |image22| image:: assets/.png
+.. |image23| image:: assets/.png
