@@ -5,14 +5,7 @@
 前言
 ============
 
-你们写论文的时候肯定有一大堆复制的<xxx毕业论文.doc>，实习的时候估计好多人的代码也是有一堆xxx.cpp xxx_副本.cpp xxx_副本1.cpp之类的，这实际上也算是一种版本控制，就是比较原始。
-
-如果想学Git，可以看看\ `廖雪峰的Git教程 <https://liaoxuefeng.com/books/git/introduction/index.html>`__\ 。
-
-我自己用的话，其实喜欢TortoiseHG，界面操作，简单方便，一般本地用也就创建仓库，push，pull，分支搞清楚就行了，都有界面操作。具体使用可以参见:ref:`tortoiseHG`
-
-注意一点，比较工具不要用 BeyondCompare ，特别是从网上下的，现在网站上的免费bc都是钓鱼的，可能会有恶意软件。推荐 winmerge ，因为可以比较word文档，还算比较方便。
-
+你们写论文的时候肯定有一大堆复制的<xxx毕业论文.doc>，实习的时候估计好多人的代码也是有一堆xxx.cpp xxx_副本.cpp xxx_副本1.cpp之类的，这实际上也算是一种版本控制，就是比较原始。不过版本管理是有正经工具的，下面介绍下：
 
 版本管理是什么
 ================
@@ -93,12 +86,35 @@
 代表工具为  ``Git``  ​、  ``Mercurial``
 
 
-常用的版本管理工具
-------------------------
+常用版本管理工具
+====================
 
+公司一般就是 SVN ， GIT ，比较常用。
+
+SNV 推荐学习: `TortoiseSVN 使用教程 <https://www.runoob.com/svn/tortoisesvn-intro.html>`_  ,菜鸟教程里有部分 svn 命令行的教程，一般情况下用不着，也可以看看。用起来很简单，全界面化的东西，而且比较稳定。
+
+GIT 推荐学习 `廖雪峰的Git教程 <ttps://liaoxuefeng.com/books/git/introduction/index.html>`_ ，GIT 命令基本还是必须学习的东西，一般情况虽然用界面也行，最好是理解下 GIT 的思想，然后再用。
+
+Mercurial 参见 :ref:`tortoiseHG` ，自己用的话其实我更推荐这个，特别是 Windows 下，速度快，不需要安装额外的环境，方便搭建。
 
 ‍.. _tortoiseHG:
 
 TortoiseHG笔记
-----------------
+=========================
+
+`参考连接 <https://blog.csdn.net/forever_008/article/details/104203895>`_ 
+ 
+ TortoiseHg 简介
+---------------------
+
+TortoiseHg是分布式的源码管理工具 Mercurial 的界面（GUI）客户端，现在还是比较小众,但是可以跟 git 等版本管理工具互通，可以无需服务器，在本地使用。下载地址为： `TortoiseHG <https://www.mercurial-scm.org/downloads>`_ 
+
+.. warning:: 
+   不要在 `bitbucket <https://tortoisehg.bitbucket.io>`_ 去下载，已经在2023年被废弃了。
+
+安装很简单，直接下一步下一步就可以了。
+
+
+简单使用
+--------------
 
