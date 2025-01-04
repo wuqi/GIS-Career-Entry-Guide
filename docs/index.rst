@@ -11,7 +11,6 @@ GIS入行指南
    learning/index
    tools/index
    data/index
-   关于科研
    结语
 
 索引

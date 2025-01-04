@@ -106,7 +106,7 @@ GIS 并不需要特别牛逼的计算机技巧，也不是很追新，但是建�
 
 1. `《程序是怎样跑起来的》 <https://book.douban.com/subject/36085560/>`_  ：这本虽然写的比较风趣，但是难度还是有的，建议至少上手过一整个项目后再看看，看看计算机怎么跑程序的，会解决你很多的疑问
 2. `《程序员的自我修养》 <https://book.douban.com/subject/3652388/>`_  ：编程学到最后总要学点编译原理啊什么的，这本比上本深入，不过也不难，也值得精读一下，了解下什么是链接，因为大部分时候我们用的都是IDE，至少要学会离开了IDE要咋办，这本大概看一遍就知道了
-3. `手撸解释器教程 <https://readonly.link/books/https://raw.githubusercontent.com/GuoYaxiang/craftinginterpreters_zh/main/book.json>`__\ ：如何创建一门脚本语言的在线教程，对于解释器、编译器、JIT、VM 等等高阶内容都有介绍，感兴趣可以读下
+3. `手撸解释器教程 <https://readonly.link/books/https://raw.githubusercontent.com/GuoYaxiang/craftinginterpreters_zh/main/book.json>`_ ：如何创建一门脚本语言的在线教程，对于解释器、编译器、JIT、VM 等等高阶内容都有介绍，感兴趣可以读下
 
 数据库
 ----------------------
