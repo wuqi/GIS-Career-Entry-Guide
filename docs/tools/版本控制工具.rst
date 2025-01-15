@@ -2,6 +2,7 @@
 版本控制工具
 ============
 
+
 前言
 ============
 
@@ -35,7 +36,8 @@
 
 .. figure:: assets/imagea.png
    :align: center
-   :caption: *本地版本控制系统*
+   
+   *本地版本控制系统*
    
 优点：
 
@@ -50,9 +52,11 @@
 ~~~~~~~~~~~~~~~~~~
 
 结构如下图所示：
+
 .. figure:: assets/imageb.png
    :align: center
-   :caption: *集中式版本控制系统*
+   
+   *集中式版本控制系统*
 
 优点：
 
@@ -70,9 +74,11 @@
 ~~~~~~~~~~~~~~~~~~
 
 结构如下图所示：
+
 .. figure:: assets/imagec.png
    :align: center
-   :caption: *分布式版本控制系统*
+   
+   *分布式版本控制系统*
 
 优点：
 
@@ -95,22 +101,21 @@ SNV 推荐学习: `TortoiseSVN 使用教程 <https://www.runoob.com/svn/tortoise
 
 GIT 推荐学习 `廖雪峰的Git教程 <ttps://liaoxuefeng.com/books/git/introduction/index.html>`_ ，GIT 命令基本还是必须学习的东西，一般情况虽然用界面也行，最好是理解下 GIT 的思想，然后再用。
 
-Mercurial 参见 :ref:`tortoiseHG` ，自己用的话其实我更推荐这个，特别是 Windows 下，速度快，不需要安装额外的环境，方便搭建。
-
-‍.. _tortoiseHG:
+Mercurial 参见下一节的介绍 ，自己用的话其实我更推荐这个，特别是 Windows 下，速度快，不需要安装额外的环境，方便搭建。
 
 TortoiseHG笔记
 =========================
 
 `参考连接 <https://blog.csdn.net/forever_008/article/details/104203895>`_ 
  
- TortoiseHg 简介
+
+TortoiseHg 简介
 ---------------------
 
 TortoiseHg是分布式的源码管理工具 Mercurial 的界面（GUI）客户端，现在还是比较小众,但是可以跟 git 等版本管理工具互通，可以无需服务器，在本地使用。下载地址为： `TortoiseHG <https://www.mercurial-scm.org/downloads>`_ 
 
 .. warning:: 
-   不要在 `bitbucket <https://tortoisehg.bitbucket.io>`_ 去下载，已经在2023年被废弃了。
+   不要在 `bitbucket <https://tortoisehg.bitbucket.io>`_ 去下载，慢，而且版本不是最新。
 
 安装很简单，直接下一步下一步就可以了。
 
@@ -118,3 +123,17 @@ TortoiseHg是分布式的源码管理工具 Mercurial 的界面（GUI）客户�
 简单使用
 --------------
 
+创建仓库
+~~~~~~~~~~~~~~
+
+在该文件所在目录，右键，选择【TortoiseHg】-----【CreateRepository Here】-----点击【创建】
+
+首次提交
+~~~~~~~~~~~~~~
+创建完仓库后，需要首先选中最新版本，接着选择需要跟踪文件，然后编写必要的修改说明，最后点击提交按钮。请注意提交操作仅仅提交到本地仓库，若要使远程仓库产生变化需要进行下一步推送操作。
+
+修改后提交
+~~~~~~~~~~~~~~
+在文件夹中右键，选择【Hg Commit】，在弹出框中选择修改过的文件，再次编写必要的修改说明后，点击提交按钮即可。
+
+本地的操作基本就这么多，如果需要的话可以自己去看参考链接，学习更详细的使用方式。

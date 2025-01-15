@@ -1,0 +1,1457 @@
+====================
+数据交换格式
+====================
+
+数据交换格式
+====================
+
+数据交换格式，就是 **服务器端** 与 **客户端** 之间进行 **数据传输与交换的格式。** 简单来说，就是各种配置文件，因为方便各种程序读取写入，因此叫交换格式，一般来说都是文本文件。
+
+一般是指配置文件，常见的有下面几种：
+
+-  :ref:`ini` 
+-  :ref:`xml`
+-  :ref:`json`
+-  :ref:`toml` 
+-  :ref:`yaml`
+
+这里只是介绍一些常见的配置，最常见的其实是json和xml，请务必熟练掌握。JSON和XML有很多的配置工具，也可以使用工具去配，常见的xmlspy，jsongrid之类的，但是至少要了解了 json 和 xml 本身的含义后再用工具，要不了多久。
+
+有很多文本文件的配置或者交换格式是用BNF或者EBNF、ABNF定义，例如WKT格式就是用BNF定义的，所以建议也了解一下 :ref:`BNF`  
+
+.. _ini:
+
+INI 文件
+------------------
+
+**INI文件** 是一种无固定标准格式的 `配置文件 <https://zh.wikipedia.org/wiki/%E8%A8%AD%E5%AE%9A%E6%AA%94>`_ 。它以简单的文字与简单的结构组成，常常使用在Windows操作系统上，许多程序也会采用 INI 文件做为配置文件之用。Windows 操作系统后来以注册表的形式取代掉 INI 文档。INI 文件的命名来源，是取自英文“初始（Initial）”的首字缩写，正与它的用途——初始化程序相应。有时候，INI 文件也会以不同的扩展名，如“.CFG”、“.CONF”、或是“.TXT”代替。
+
+ini的格式很简单，主要由节，键值对，注释组成：
+
+节(section)
+~~~~~~~~~~~~~~
+
+节用方括号括起来，单独占一行，例如：
+
+.. code-block:: ini
+
+    [section]
+
+键(key)
+~~~~~~~~~~~~~~
+
+键(key)又名属性(property)，单独占一行用等号连接键名和键值，例如：
+
+.. code-block:: ini
+
+    name=value
+
+注释(comment)
+~~~~~~~~~~~~~~
+
+注释使用英文分号（;）开头，单独占一行。在分号后面的文字，直到该行结尾都全部为注释，例如：
+
+.. code-block:: ini
+
+    ; comment text
+
+完整示例
+~~~~~~~~~~~~~~
+
+.. code-block:: ini
+
+   ; last modified 1 April 2001 by John Doe
+   [owner]
+   name=John Doe
+   organization=Acme Products
+
+   [database]
+   server=192.0.2.42 ; use IP address in case network name resolution is not working
+   port=143
+   file="acme payroll.dat"
+
+.. _xml:
+
+XML 文件
+------------------
+
+原文地址: https://blog.csdn.net/apple_51673523/article/details/122699029
+
+XML 概述
+~~~~~~~~~~~~~~
+
+可扩展标记语言（英语：Extensible Markup Language，简称：XML）是一种标记语言和用于存储、传输和重构松散数据的文件格式。它定义了一系列编码文档的规则以使其在人类可读的同时机器可读。
+
+XML 的设计目标是注重简洁、通用和因特网可用性。它是一种通过 Unicode 编码实现对多种语言有强大支持的文本数据格式。尽管 XML 的设计重心在于文档，它被广泛应用于网络服务中松散数据结构的表示。
+
+XML 语法
+~~~~~~~~~~~~~~
+
+XML文档的字符分为标记（Markup）与内容（content）两类。可由简单的语法判断出来：标记通常以<开头，以>结尾；或者以字符& 开头，以;结尾。不是标记的字符就是内容。但是CDATA部分，分解符号 `<![CDATA[` 与 `]]>` 是标记，二者之间的文本为内容。 最外界的空白符是标记。
+
+标签（ Tag ）
+++++++++++++++
+
+一个tag属于标记结构，以<开头，以>结尾。Tag 名字是大小写敏感，不能包括任何字符 !"#$%&'()*+,/;<=>?@[\]^`{|}~， 也不能有空格符， 不能以 "-" 或 "." 或数字开始。可分为三
+
+- 起始标签 start-tag，如 `<section>` ;
+- 结束标签 end-tag，如 `</section>` ;
+- 空白标签 empty-element tag，如 `<line-break />` .
+
+
+元素（ Element ）
+++++++++++++++++++++++++++++
+
+元素是文档逻辑组件，它在起始标签与匹配的结束标签之间，或者仅由一个空白标签组成。例如： `<greeting>Hello, world!</greeting>` . 另一个例子是： `<line-break />` . 在标签间的内容可以包含其他元素（称为子元素）
+
+属性（ Attribute ）
+++++++++++++++++++++++++++++
+
+属性是由名称 - 值对组成的标记结构，存在于开始标签或空元素标签内。例如， `<img src="madonna.jpg" alt="Madonna" />` 中，属性的名称是 "src" 和 "alt"，它们的值分别是 "madonna.jpg" 和 "Madonna"。另一个例子是 `<step number="3">Connect A to B.</step>` ，其中属性的名称是 "number"，其值是 "3"。XML 属性只能有一个值，每个属性在每个元素上最多只能出现一次。在常见情况下，如果需要包含多个值的列表，则必须通过将列表编码为符合良构性的 XML 属性，其格式超出了 XML 本身的定义。通常，这可以是以逗号或分号分隔的列表，或者如果已知各个值不包含空格 [ii]，则可以使用以空格分隔的列表。例如， `<div class="inner greeting-box">Welcome!</div>` 中，属性 "class" 的值是 "inner greeting-box"，同时表示两个 CSS 类名 "inner" 和 "greeting-box"。
+
+声明（ Declaration ）
+++++++++++++++++++++++++++++
+
+XML文档如果以XML declaration开始，则表述了文档的一些信息。如<?xml version="1.0" encoding="UTF-8"?>
+
+注释
+++++++++++++++++++++++++++++
+
+注释可以在文档内标记外的、XML声明之后的任何地方出现，始于 `<!--` 终于 `-->`。为了兼容SGML，注释内不得出现"--"，这意味着注释不能嵌套。& 符号在注释中没有特殊意义，因此实体和字符引用不会被识别，自然无法表示文档编码字符集之外的字符。
+
+有效注释的示例： `<!--no need to escape <code> & such in comments-->`
+
+完整示例
+++++++++++++++++++++++++++++
+
+.. code-block:: xml
+
+   <!--人力资源管理系统-->
+   <?xml version="1.0" encoding="utf-8"?>
+   <hr>
+       <employee no="7706">
+           <name>张三</name>
+           <age>31</age>
+           <salary>5000</salary>
+           <department>
+               <dname>技术部</dname>
+               <address>xx大厦-B104</address>
+           </department>
+       </employee>
+       <employee no="7707">
+           <name>李四</name>
+           <age>29</age>
+           <salary>4000</salary>
+           <department>
+               <dname>会计部</dname>
+               <address>xx大厦-B106</address>
+           </department>
+       </employee>
+   </hr>
+
+
+XML 的约束
+~~~~~~~~~~~~~~
+
+格式良好就是向我们上面的这个 XML 文件一样，标签有意义，语法也没有问题等。拿什么是约束呢？
+
+比如说这里有定义人的年龄，那么如果数据输入的时候出错了，把年龄定义成为负数了，这可以吗？这肯定不行，不带这么离谱的。
+
+但是 XML 文件它又无法检查出来这个错误，因为它是内容是自由的，这时候我们就得给它引入约束了，对其中的数据、标签等进行约束等。编写一个文档来约束一个 xml 文档的书写规范，这称之为 XML 约束。
+
+XML 约束又分为 DTD 和 XSD，接下来我们继续来讲一下这两种约束。
+
+
+DTD 约束
+++++++++++++++
+
+DTD 是一种用于定义 XML 文档结构和约束的语法规则。它规定了 XML 文档中允许的元素、属性、实体及其相互关系。
+
+1. DTD 声明
+
+DTD 可以在 XML 文档内部声明（内部 DTD），也可以在外部文件中声明（外部 DTD）。
+
+### 内部 DTD 声明
+::
+
+    <!DOCTYPE 根元素名 [
+        <!-- DTD 规则 -->
+    ]>
+
+### 外部 DTD 声明
+::
+
+    <!DOCTYPE 根元素名 SYSTEM "文件名.dtd">
+
+或使用公共 DTD：
+::
+
+    <!DOCTYPE 根元素名 PUBLIC "公共标识符" "文件名.dtd">
+
+2. 元素声明
+
+DTD 使用 `<!ELEMENT>` 声明元素，并定义其内容和结构。
+
+::
+
+    <!ELEMENT 元素名 内容模型>
+
+内容模型
+
+- `(#PCDATA)`：元素包含纯文本。
+- `(子元素1, 子元素2, ...)`：元素包含指定顺序的子元素。
+- `(子元素1|子元素2|...)`：元素包含其中一个子元素。
+- `EMPTY`：元素为空。
+- `ANY`：元素可以包含任何内容。
+
+::
+
+    <!ELEMENT book (title, author, price)>
+    <!ELEMENT title (#PCDATA)>
+    <!ELEMENT author (#PCDATA)>
+    <!ELEMENT price (#PCDATA)>
+
+3. 属性声明
+
+DTD 使用 `<!ATTLIST>` 声明元素的属性。
+
+::
+
+    <!ATTLIST 元素名 属性名 属性类型 默认值>
+
+属性类型
+
+- `CDATA`：字符数据。
+- `ID`：唯一标识符。
+- `IDREF`：引用另一个元素的 `ID`。
+- `IDREFS`：引用多个 `ID`，用空格分隔。
+- `NMTOKEN`：合法的 XML 名称。
+- `NMTOKENS`：多个合法的 XML 名称，用空格分隔。
+- `ENTITY`：实体。
+- `ENTITIES`：多个实体，用空格分隔。
+- `NOTATION`：符号。
+- `(值1|值2|...)`：枚举值。
+
+默认值
+
+- `#REQUIRED`：属性必须存在。
+- `#IMPLIED`：属性可选。
+- `#FIXED "固定值"`：属性值为固定值。
+- `"默认值"`：属性的默认值。
+
+::
+
+    <!ATTLIST book
+        id ID #REQUIRED
+        lang CDATA #IMPLIED
+        category (fiction|non-fiction) "fiction"
+    >
+
+4. 实体声明
+
+DTD 使用 `<!ENTITY>` 声明实体，用于定义可重用的文本或特殊字符。
+
+::
+
+    <!ENTITY 实体名 "实体值">
+
+::
+
+    <!ENTITY author "John Doe">
+    <!ENTITY copyright "© 2023">
+
+::
+
+    <book>
+        <title>&author;</title>
+        <copyright>&copyright;</copyright>
+    </book>
+
+5. 符号声明
+
+DTD 使用 `<!NOTATION>` 声明符号，用于定义非 XML 数据格式。
+
+::
+
+    <!NOTATION 符号名 SYSTEM "外部标识符">
+
+### 示例
+::
+
+    <!NOTATION png SYSTEM "image/png">
+
+6. DTD 示例
+
+以下是一个完整的 DTD 示例：
+::
+
+    <!DOCTYPE bookstore [
+        <!ELEMENT bookstore (book+)>
+        <!ELEMENT book (title, author, price)>
+        <!ELEMENT title (#PCDATA)>
+        <!ELEMENT author (#PCDATA)>
+        <!ELEMENT price (#PCDATA)>
+        <!ATTLIST book
+            id ID #REQUIRED
+            lang CDATA #IMPLIED
+            category (fiction|non-fiction) "fiction"
+        >
+        <!ENTITY author "John Doe">
+        <!ENTITY copyright "© 2023">
+    ]>
+
+
+总结
+
+- DTD 用于定义 XML 文档的结构和约束。
+- 通过 `<!ELEMENT>` 声明元素， `<!ATTLIST>` 声明属性， `<!ENTITY>` 声明实体。
+- DTD 可以是内部的或外部的。
+- DTD 提供了对 XML 文档的验证功能，确保文档符合预定义的结构和规则。
+
+
+XSD 约束
+++++++++++++++
+
+XSD 是一种用于定义 XML 文档结构和约束的语言。它比 DTD 更强大，支持数据类型、命名空间等高级特性。
+
+1. XSD 基本结构
+
+XSD 文件本身是一个 XML 文档，其根元素为 `<schema>`。
+
+### 示例
+
+::
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <!-- 定义元素和类型 -->
+    </xs:schema>
+
+2. 元素定义
+
+使用 `<xs:element>` 定义 XML 元素。
+
+### 语法
+
+::
+
+    <xs:element name="元素名" type="类型" minOccurs="最小出现次数" maxOccurs="最大出现次数"/>
+
+### 示例
+
+::
+
+    <xs:element name="book" type="xs:string"/>
+    <xs:element name="price" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
+
+3. 类型定义
+
+XSD 支持内置类型和自定义类型。
+
+### 内置类型
+
+- `xs:string`：字符串。
+- `xs:decimal`：十进制数。
+- `xs:integer`：整数。
+- `xs:date`：日期。
+- `xs:boolean`：布尔值。
+
+### 自定义类型
+使用 `<xs:complexType>` 定义复杂类型，使用 `<xs:simpleType>` 定义简单类型。
+
+#### 复杂类型
+
+::
+
+    <xs:complexType name="BookType">
+        <xs:sequence>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="author" type="xs:string"/>
+            <xs:element name="price" type="xs:decimal"/>
+        </xs:sequence>
+    </xs:complexType>
+
+#### 简单类型
+::
+
+    <xs:simpleType name="PriceType">
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="1000"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+4. 属性定义
+
+使用 `<xs:attribute>` 定义元素的属性。
+
+### 语法
+
+::
+
+    <xs:attribute name="属性名" type="类型" use="optional|required"/>
+
+### 示例
+
+::
+
+    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="lang" type="xs:string" use="optional"/>
+
+5. 序列和选择
+
+使用 `<xs:sequence>` 定义元素的顺序，使用 `<xs:choice>` 定义元素的选择。
+
+### 序列
+
+::
+
+    <xs:sequence>
+        <xs:element name="title" type="xs:string"/>
+        <xs:element name="author" type="xs:string"/>
+    </xs:sequence>
+
+### 选择
+::
+
+    <xs:choice>
+        <xs:element name="email" type="xs:string"/>
+        <xs:element name="phone" type="xs:string"/>
+    </xs:choice>
+
+6. 约束
+
+XSD 支持多种约束，如最小值、最大值、正则表达式等。
+
+### 示例
+
+::
+
+    <xs:simpleType name="AgeType">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="120"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="EmailType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+7. 命名空间
+
+XSD 支持命名空间，用于避免元素和属性名称冲突。
+
+### 示例
+
+::
+
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               targetNamespace="http://www.example.com/books"
+               xmlns="http://www.example.com/books"
+               elementFormDefault="qualified">
+        <!-- 定义元素和类型 -->
+    </xs:schema>
+
+8. 完整示例
+
+以下是一个完整的 XSD 示例：
+
+::
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               targetNamespace="http://www.example.com/books"
+               xmlns="http://www.example.com/books"
+               elementFormDefault="qualified">
+
+        <xs:element name="bookstore">
+            <xs:complexType>
+                <xs:sequence>
+                    <xs:element name="book" maxOccurs="unbounded">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="title" type="xs:string"/>
+                                <xs:element name="author" type="xs:string"/>
+                                <xs:element name="price" type="xs:decimal"/>
+                            </xs:sequence>
+                            <xs:attribute name="id" type="xs:ID" use="required"/>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:element>
+    </xs:schema>
+
+---
+
+总结
+
+- XSD 是一种强大的 XML 模式定义语言，支持数据类型、命名空间等特性。
+- 通过 `<xs:element>`、`<xs:complexType>`、`<xs:simpleType>` 等元素定义 XML 结构和约束。
+- XSD 提供了丰富的约束机制，如最小值、最大值、正则表达式等。
+- 命名空间用于避免名称冲突，增强 XML 的可扩展性。
+
+
+XPath 表达式
+++++++++++++++
+
+XPath 是一种用于在 XML 文档中定位节点的语言。它通过路径表达式选择节点或节点集，广泛应用于 XML 解析、数据提取和转换。
+
+1. XPath 基本语法
+
+XPath 使用路径表达式来导航 XML 文档的层次结构。
+
+### 路径表达式
+
+- `/`：从根节点开始。
+- `//`：从当前节点开始，递归搜索所有子节点。
+- `.`：当前节点。
+- `..`：父节点。
+- `@`：选择属性。
+
+### 示例
+
+::
+
+    /bookstore/book          # 选择根元素 bookstore 下的所有 book 元素
+    //book                   # 选择文档中的所有 book 元素
+    ./author                 # 选择当前节点下的所有 author 元素
+    @id                      # 选择当前节点的 id 属性
+
+2. 节点选择
+
+XPath 支持选择元素、属性、文本等节点。
+
+### 选择元素
+
+::
+
+    /bookstore/book/title    # 选择 bookstore 下所有 book 的 title 元素
+
+### 选择属性
+
+::
+
+    /bookstore/book/@id      # 选择 bookstore 下所有 book 的 id 属性
+
+### 选择文本
+
+::
+
+    /bookstore/book/title/text()  # 选择 bookstore 下所有 book 的 title 元素的文本内容
+
+3. 谓语（Predicates）
+
+谓语用于过滤节点，通常放在方括号 `[]` 中。
+
+### 示例
+
+::
+
+    /bookstore/book[1]             # 选择第一个 book 元素
+    /bookstore/book[last()]        # 选择最后一个 book 元素
+    /bookstore/book[price>35]      # 选择 price 大于 35 的 book 元素
+    /bookstore/book[author='John'] # 选择 author 为 John 的 book 元素
+
+4. 通配符
+
+XPath 支持通配符来选择未知节点。
+
+### 示例
+::
+
+    /bookstore/*            # 选择 bookstore 下的所有子元素
+    //*                     # 选择文档中的所有元素
+    /bookstore/book/@*      # 选择 book 元素的所有属性
+
+5. 轴（Axes）
+
+轴用于定义相对于当前节点的节点集。
+
+### 常用轴
+
+- `child`：子节点（默认轴）。
+- `parent`：父节点。
+- `ancestor`：所有祖先节点。
+- `descendant`：所有后代节点。
+- `following-sibling`：后续同级节点。
+- `preceding-sibling`：前驱同级节点。
+
+### 示例
+
+::
+
+    /bookstore/child::book          # 选择 bookstore 的子节点 book
+    //book/parent::bookstore        # 选择 book 的父节点 bookstore
+    //book/ancestor::bookstore      # 选择 book 的所有祖先节点 bookstore
+    //book/descendant::title        # 选择 book 的所有后代节点 title
+
+6. 运算符
+
+XPath 支持多种运算符，用于比较和计算。
+
+### 比较运算符
+
+- `=`：等于
+- `!=`：不等于
+- `<`：小于
+- `>`：大于
+- `<=`：小于等于
+- `>=`：大于等于
+
+### 逻辑运算符
+
+- `and`：与
+- `or`：或
+- `not()`：非
+
+### 示例
+
+::
+
+    /bookstore/book[price>30 and price<50]  # 选择 price 在 30 到 50 之间的 book 元素
+    /bookstore/book[not(@id)]               # 选择没有 id 属性的 book 元素
+
+7. 函数
+
+XPath 提供了丰富的内置函数，用于处理字符串、数值、节点集等。
+
+### 常用函数
+
+- `text()`：获取节点的文本内容。
+- `contains()`：检查字符串是否包含子字符串。
+- `starts-with()`：检查字符串是否以指定前缀开头。
+- `count()`：计算节点集中的节点数。
+- `sum()`：计算节点集中数值的总和。
+
+### 示例
+
+::
+
+    //book[contains(title, 'XML')]  # 选择 title 包含 "XML" 的 book 元素
+    count(/bookstore/book)          # 计算 bookstore 下 book 元素的数量
+    sum(//book/price)               # 计算所有 book 的 price 总和
+
+8. 完整示例
+
+以下是一个 XML 文档和对应的 XPath 查询示例：
+
+#### XML 文档
+
+::
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <bookstore>
+        <book id="1">
+            <title lang="en">Learning XML</title>
+            <author>John Doe</author>
+            <price>39.95</price>
+        </book>
+        <book id="2">
+            <title lang="en">Advanced XML</title>
+            <author>Jane Smith</author>
+            <price>49.95</price>
+        </book>
+    </bookstore>
+
+#### XPath 查询
+
+::
+
+    /bookstore/book/title              # 选择所有 title 元素
+    //book[price>40]/title             # 选择 price 大于 40 的 book 的 title 元素
+    //book[contains(title, 'XML')]     # 选择 title 包含 "XML" 的 book 元素
+    /bookstore/book[1]/author/text()   # 选择第一个 book 的 author 文本内容
+
+
+总结
+
+- XPath 是一种强大的 XML 查询语言，用于定位和选择 XML 文档中的节点。
+- 通过路径表达式、谓语、通配符、轴和函数，可以灵活地查询和过滤 XML 数据。
+- XPath 广泛应用于 XML 解析、数据提取和转换场景。
+
+
+.. _json:
+
+JSON 文件
+------------------
+
+JSON 是一种轻量级的数据交换格式，易于人阅读和编写，同时也易于机器解析和生成。它基于 JavaScript 的对象表示法，但独立于语言，广泛用于 Web 开发和数据存储。
+
+1. JSON 基本结构
+
+JSON 数据由键值对组成，支持以下数据类型：
+
+- 对象（Object）
+- 数组（Array）
+- 字符串（String）
+- 数字（Number）
+- 布尔值（Boolean）
+- 空值（null）
+
+### 示例
+
+::
+
+    {
+        "name": "John Doe",
+        "age": 30,
+        "isStudent": false,
+        "address": {
+            "street": "123 Main St",
+            "city": "New York"
+        },
+        "hobbies": ["reading", "traveling", "coding"]
+    }
+
+2. JSON 对象
+
+JSON 对象是由花括号 `{}` 包围的键值对集合。键是字符串，值可以是任意 JSON 数据类型。
+
+### 语法
+
+::
+
+    {
+        "key1": value1,
+        "key2": value2,
+        ...
+    }
+
+### 示例
+
+::
+
+    {
+        "name": "Alice",
+        "age": 25
+    }
+
+3. JSON 数组
+
+JSON 数组是由方括号 `[]` 包围的值列表。值可以是任意 JSON 数据类型，包括对象和数组。
+
+### 语法
+
+::
+
+    [value1, value2, ...]
+
+### 示例
+
+::
+
+    ["apple", "banana", "cherry"]
+
+4. JSON 值
+
+JSON 值可以是以下类型：
+
+- **字符串**：用双引号 `"` 包围的 Unicode 字符序列。
+- **数字**：整数或浮点数。
+- **布尔值**：`true` 或 `false`。
+- **空值**：`null`。
+- **对象**：嵌套的 JSON 对象。
+- **数组**：嵌套的 JSON 数组。
+
+### 示例
+
+::
+
+    {
+        "string": "Hello, World!",
+        "number": 42,
+        "boolean": true,
+        "nullValue": null,
+        "object": {
+            "key": "value"
+        },
+        "array": [1, 2, 3]
+    }
+
+5. JSON 文件示例
+
+以下是一个完整的 JSON 文件示例：
+
+::
+
+    {
+        "name": "John Doe",
+        "age": 30,
+        "isStudent": false,
+        "address": {
+            "street": "123 Main St",
+            "city": "New York",
+            "zipCode": "10001"
+        },
+        "hobbies": ["reading", "traveling", "coding"],
+        "education": [
+            {
+                "degree": "Bachelor",
+                "major": "Computer Science",
+                "year": 2015
+            },
+            {
+                "degree": "Master",
+                "major": "Data Science",
+                "year": 2018
+            }
+        ]
+    }
+
+6. JSON 格式规则
+
+- **键名必须是字符串**：用双引号 `"` 包围。
+- **值可以是对象、数组、字符串、数字、布尔值或 `null`**。
+- **逗号分隔键值对**：最后一个键值对后不能有逗号。
+- **文件扩展名**：通常为 `.json`。
+- **MIME 类型**：`application/json`。
+
+7. JSON 的优点
+
+- **轻量级**：文件体积小，适合网络传输。
+- **易读易写**：结构清晰，易于人类阅读和编写。
+- **跨语言支持**：几乎所有编程语言都支持 JSON 解析和生成。
+- **广泛使用**：广泛应用于 Web API、配置文件和数据存储。
+
+8. JSON 的局限性
+
+- **不支持注释**：JSON 标准不支持注释。
+- **数据类型有限**：不支持日期、函数等复杂类型。
+- **严格的语法**：键名必须用双引号，逗号和冒号使用必须正确。
+
+---
+
+总结
+
+- JSON 是一种轻量级的数据交换格式，基于键值对和嵌套结构。
+- 支持对象、数组、字符串、数字、布尔值和 `null` 等数据类型。
+- 广泛用于 Web 开发、API 数据交换和配置文件。
+- 优点是轻量、易读、跨语言支持，但局限性包括不支持注释和数据类型有限。
+
+
+.. _yaml:
+
+YAML 文件
+------------------
+
+YAML 是一种人类可读的数据序列化格式，常用于配置文件和数据交换。它的设计目标是简洁易读，支持复杂的数据结构。
+
+1. YAML 基本结构
+
+YAML 使用缩进来表示层次结构，支持以下数据类型：
+- 标量（Scalar）：字符串、数字、布尔值等。
+- 序列（Sequence）：数组或列表。
+- 映射（Mapping）：键值对或对象。
+
+### 示例
+
+::
+
+    name: John Doe
+    age: 30
+    isStudent: false
+    address:
+      street: 123 Main St
+      city: New York
+    hobbies:
+      - reading
+      - traveling
+      - coding
+
+2. 标量（Scalar）
+
+标量是 YAML 中的基本数据类型，包括字符串、数字、布尔值和空值。
+
+### 语法
+
+- 字符串可以不加引号，也可以用单引号或双引号。
+- 数字和布尔值直接表示。
+- 空值用 `null` 或 `~` 表示。
+
+### 示例
+
+::
+
+    string: Hello, World!
+    quotedString: "Hello, World!"
+    number: 42
+    float: 3.14
+    boolean: true
+    nullValue: null
+
+3. 序列（Sequence）
+
+序列是 YAML 中的数组或列表，用 `-` 表示每个元素。
+
+### 语法
+
+::
+
+    - item1
+    - item2
+    - item3
+
+### 示例
+
+::
+
+    hobbies:
+      - reading
+      - traveling
+      - coding
+
+4. 映射（Mapping）
+
+映射是 YAML 中的键值对或对象，用 `key: value` 表示。
+
+### 语法
+
+::
+
+    key1: value1
+    key2: value2
+    key3: value3
+
+### 示例
+
+::
+
+    address:
+      street: 123 Main St
+      city: New York
+      zipCode: 10001
+
+5. 嵌套结构
+
+YAML 支持嵌套的序列和映射，通过缩进来表示层次结构。
+
+### 示例
+
+::
+
+    person:
+      name: John Doe
+      age: 30
+      address:
+        street: 123 Main St
+        city: New York
+      hobbies:
+        - reading
+        - traveling
+        - coding
+
+6. 多行字符串
+
+YAML 支持多行字符串，可以使用 `|` 或 `>` 表示。
+
+### 使用 `|` 保留换行符
+
+::
+
+    description: |
+      This is a multi-line
+      string with line breaks
+      preserved.
+
+### 使用 `>` 折叠换行符
+
+::
+
+    description: >
+      This is a multi-line
+      string with line breaks
+      folded into spaces.
+
+7. 注释
+
+YAML 使用 `#` 表示注释。
+
+### 示例
+
+::
+
+    # This is a comment
+    name: John Doe  # This is an inline comment
+
+8. YAML 文件示例
+
+以下是一个完整的 YAML 文件示例：
+
+::
+
+    # Person information
+    name: John Doe
+    age: 30
+    isStudent: false
+    address:
+      street: 123 Main St
+      city: New York
+      zipCode: 10001
+    hobbies:
+      - reading
+      - traveling
+      - coding
+    education:
+      - degree: Bachelor
+        major: Computer Science
+        year: 2015
+      - degree: Master
+        major: Data Science
+        year: 2018
+
+9. YAML 格式规则
+
+- **缩进表示层次**：使用空格缩进，通常为 2 或 4 个空格。
+- **键值对用冒号分隔**：`key: value`。
+- **序列用 `-` 表示**：每个元素前加 `-`。
+- **字符串可以不加引号**：除非包含特殊字符。
+- **注释用 `#` 表示**。
+
+10. YAML 的优点
+
+- **易读易写**：结构清晰，适合人类阅读和编写。
+- **支持复杂数据结构**：支持嵌套的序列和映射。
+- **跨语言支持**：几乎所有编程语言都支持 YAML 解析和生成。
+- **广泛使用**：常用于配置文件、数据交换和 DevOps 工具。
+
+11. YAML 的局限性
+
+- **缩进敏感**：缩进错误会导致解析失败。
+- **不支持多文档**：单个 YAML 文件通常只包含一个文档（可通过 `---` 分隔多文档）。
+- **性能较低**：相比 JSON，YAML 的解析性能较低。
+
+---
+
+总结
+
+- YAML 是一种人类可读的数据序列化格式，支持标量、序列和映射。
+- 通过缩进表示层次结构，适合配置文件和复杂数据。
+- 优点是易读、支持嵌套结构，但局限性包括缩进敏感和性能较低。
+
+.. _toml:
+
+TOML 文件
+------------------------------------
+
+TOML 是一种用于配置文件的格式，设计目标是易于阅读和编写。它的语法简洁明了，支持多种数据类型和嵌套结构。
+
+1. TOML 基本结构
+
+TOML 文件由键值对组成，支持以下数据类型：
+
+- 字符串（String）
+- 整数（Integer）
+- 浮点数（Float）
+- 布尔值（Boolean）
+- 数组（Array）
+- 表（Table）
+- 内联表（Inline Table）
+- 日期时间（Date-Time）
+
+### 示例
+
+::
+
+    # 这是一个 TOML 文件示例
+    title = "TOML 示例"
+
+    [owner]
+    name = "Tom"
+    dob = 1979-05-27T07:32:00-08:00
+
+    [database]
+    enabled = true
+    ports = [8000, 8001, 8002]
+    data = [ ["delta", "phi"], [3.14] ]
+
+2. 键值对
+
+键值对是 TOML 文件的基本组成单元，键和值用等号 `=` 分隔。
+
+### 语法
+
+::
+
+    key = value
+
+### 示例
+
+::
+
+    name = "Tom"
+    age = 25
+    isStudent = false
+
+3. 字符串
+
+字符串可以用双引号 `"` 或单引号 `'` 包围。TOML 还支持多行字符串，使用三个双引号 (`"""`) 或三个单引号 (`'''`)。
+
+### 示例
+
+::
+
+    name = "Tom"
+    nickname = 'Tommy'
+    bio = """
+    这是一个多行字符串。
+    它可以跨越多行。
+    """
+    quote = '''
+    这是另一个多行字符串。
+    它也可以跨越多行。
+    '''
+
+4. 数字
+
+TOML 支持整数和浮点数。
+
+### 示例
+
+::
+
+    age = 25
+    pi = 3.14
+
+5. 布尔值
+
+布尔值用 `true` 或 `false` 表示。
+
+### 示例
+
+::
+
+    isStudent = true
+    isWorking = false
+
+6. 数组
+
+数组用方括号 `[]` 包围，元素用逗号 `,` 分隔。
+
+### 示例
+
+::
+
+    ports = [8000, 8001, 8002]
+    colors = ["red", "green", "blue"]
+
+7. 表
+
+表用方括号 `[]` 定义，表示一组键值对的集合。
+
+### 语法
+
+::
+
+    [tableName]
+    key = value
+
+### 示例
+
+::
+
+    [owner]
+    name = "Tom"
+    dob = 1979-05-27T07:32:00-08:00
+
+8. 内联表
+
+内联表用花括号 `{}` 定义，表示一组键值对的集合。
+
+### 语法
+
+::
+
+    key = { key1 = value1, key2 = value2 }
+
+### 示例
+
+::
+
+    owner = { name = "Tom", dob = 1979-05-27T07:32:00-08:00 }
+
+9. 日期时间
+
+TOML 支持日期时间格式。
+
+### 示例
+
+::
+
+    dob = 1979-05-27T07:32:00-08:00
+
+10. 注释
+
+注释用井号 `#` 表示。
+
+### 示例
+
+::
+
+    # 这是一个注释
+    name = "Tom"
+
+11. 多行字符串
+
+TOML 支持多行字符串，使用三个双引号 (`"""`) 或三个单引号 (`'''`)。
+
+### 示例
+
+::
+
+    bio = """
+    这是一个多行字符串。
+    它可以跨越多行。
+    """
+    quote = '''
+    这是另一个多行字符串。
+    它也可以跨越多行。
+    '''
+
+12. TOML 文件示例
+
+以下是一个完整的 TOML 文件示例：
+
+::
+
+    # 这是一个 TOML 文件示例
+    title = "TOML 示例"
+
+    [owner]
+    name = "Tom"
+    dob = 1979-05-27T07:32:00-08:00
+
+    [database]
+    enabled = true
+    ports = [8000, 8001, 8002]
+    data = [ ["delta", "phi"], [3.14] ]
+
+    [servers]
+    [servers.alpha]
+    ip = "10.0.0.1"
+    role = "frontend"
+
+    [servers.beta]
+    ip = "10.0.0.2"
+    role = "backend"
+
+    bio = """
+    这是一个多行字符串。
+    它可以跨越多行。
+    """
+
+13. TOML 的优点
+
+- **易读易写**：语法简洁明了，适合人类阅读和编写。
+- **支持复杂数据结构**：支持嵌套的表和数组。
+- **跨语言支持**：几乎所有编程语言都支持 TOML 解析和生成。
+- **广泛使用**：常用于配置文件和数据交换。
+
+14. TOML 的局限性
+
+- **不支持多文档**：单个 TOML 文件通常只包含一个文档。
+
+---
+
+总结
+
+- TOML 是一种用于配置文件的格式，支持多种数据类型和嵌套结构。
+- 通过键值对、表、数组和内联表，可以灵活地组织和表示数据。
+- 支持多行字符串，使用三个双引号 (`"""`) 或三个单引号 (`'''`)。
+- 优点是易读、支持嵌套结构，但局限性包括不支持多文档。
+
+
+.. _BNF:
+
+BNF、EBNF、ABNF 语法格式
+------------------------------------
+
+详细可以参见 `语法格式描述规范 BNF、EBNF、ABNF  <https://www.jianshu.com/p/15efcb0c06c8>`_ ，这里只列一下语法，其实蛮简单的，类似 :ref:`regex` 。
+
+语法格式描述规范用于定义形式语言的语法结构。常见的语法描述规范包括 **BNF**、**EBNF** 和 **ABNF**。以下是它们的详细语法规则和具体用途。
+
+1. BNF（巴科斯-瑙尔范式）
+
+BNF（Backus-Naur Form）是一种用于描述上下文无关语法的形式化表示法，最初由 John Backus 和 Peter Naur 提出。
+
+### 语法规则
+
+- **非终结符**：用尖括号 `< >` 包围，表示语法规则中的占位符。
+- **终结符**：具体的字符或字符串。
+- **产生式**：用 `::=` 表示，左边是非终结符，右边是终结符或非终结符的组合。
+- **选择**：用 `|` 表示，表示“或”的关系。
+
+### 示例
+
+::
+
+    <digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+    <integer> ::= <digit> | <digit> <integer>
+
+### 具体用途
+
+- **编程语言语法**：用于描述编程语言的基础语法，如变量声明、表达式等。
+- **配置文件格式**：用于定义配置文件的语法结构。
+- **文档格式**：用于描述文档的格式规则。
+
+### 特点
+
+- 简洁明了，适合描述简单的语法。
+- 不支持重复、可选等高级语法特性。
+
+2. EBNF（扩展巴科斯-瑙尔范式）
+
+EBNF（Extended Backus-Naur Form）是 BNF 的扩展版本，增加了更多的语法描述能力。
+
+### 语法规则
+
+- **非终结符**：通常不用尖括号，直接使用标识符。
+- **终结符**：用双引号 `" "` 包围。
+- **产生式**：用 `=` 表示，左边是非终结符，右边是终结符或非终结符的组合。
+- **选择**：用 `|` 表示。
+- **可选**：用 `[ ]` 表示。
+- **重复**：用 `{ }` 表示。
+- **分组**：用 `( )` 表示。
+
+### 示例
+
+::
+
+    digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+    integer = digit, {digit};
+
+### 具体用途
+
+- **复杂语法描述**：用于描述编程语言的完整语法，如函数定义、控制结构等。
+- **数据格式定义**：用于定义复杂的数据格式，如 JSON、XML 等。
+- **协议描述**：用于描述网络协议的语法结构。
+
+### 特点
+
+- 支持可选、重复、分组等高级语法特性。
+- 更适合描述复杂的语法结构。
+
+3. ABNF（增强巴科斯-瑙尔范式）
+
+ABNF（Augmented Backus-Naur Form）是 BNF 的另一种扩展版本，主要用于描述协议和数据格式。
+
+### 语法规则
+
+- **非终结符**：通常不用尖括号，直接使用标识符。
+- **终结符**：用双引号 `" "` 包围。
+- **产生式**：用 `=` 表示，左边是非终结符，右边是终结符或非终结符的组合。
+- **选择**：用 `/` 表示。
+- **重复次数**：用 `*` 表示，例如 `3*5"a"` 表示 3 到 5 个 `a`。
+- **大小写不敏感**：用 `/` 表示，例如 `"a" / "A"`。
+- **注释**：用 `;` 表示。
+
+### 示例
+
+::
+
+    digit = "0" / "1" / "2" / "3" / "4" / "5" / "6" / "7" / "8" / "9"
+    integer = 1*digit
+
+### 具体用途
+
+- **协议定义**：用于描述网络协议的语法结构，如 HTTP、SMTP 等。
+- **数据格式定义**：用于定义数据格式，如 URI、电子邮件地址等。
+- **配置文件格式**：用于定义配置文件的语法结构。
+
+### 特点
+
+- 支持重复次数、大小写不敏感等特性。
+- 广泛用于协议和数据格式的定义。
+
+4. 对比总结
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 20
+
+   * - **特性**
+     - **BNF**
+     - **EBNF**
+     - **ABNF**
+   * - 非终结符
+     - `< >`
+     - 直接使用
+     - 直接使用
+   * - 终结符
+     - 直接使用
+     - `" "`
+     - `" "`
+   * - 产生式
+     - `::=`
+     - `=`
+     - `=`
+   * - 选择
+     - `|`
+     - `|`
+     - `/`
+   * - 可选
+     - 不支持
+     - `[ ]`
+     - 不支持
+   * - 重复
+     - 不支持
+     - `{ }`
+     - `*`
+   * - 分组
+     - 不支持
+     - `( )`
+     - 不支持
+   * - 重复次数
+     - 不支持
+     - 不支持
+     - `*`
+   * - 大小写不敏感
+     - 不支持
+     - 不支持
+     - `/`
+   * - 注释
+     - 不支持
+     - 不支持
+     - `;`
+
+5. 示例对比
+
+### BNF 示例
+
+::
+
+    <digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+    <integer> ::= <digit> | <digit> <integer>
+
+### EBNF 示例
+
+::
+
+    digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+    integer = digit, {digit};
+
+### ABNF 示例
+
+::
+
+    digit = "0" / "1" / "2" / "3" / "4" / "5" / "6" / "7" / "8" / "9"
+    integer = 1*digit
+
+6. 应用场景
+
+- **BNF**：适合描述简单的语法结构，如编程语言的基础语法。
+- **EBNF**：适合描述复杂的语法结构，如编程语言的完整语法。
+- **ABNF**：适合描述协议和数据格式，如 HTTP、URI 等。
+
+---
+
+总结
+
+- **BNF** 是基础的语法描述规范，简洁但功能有限。
+- **EBNF** 是 BNF 的扩展版本，支持可选、重复、分组等特性。
+- **ABNF** 是另一种扩展版本，主要用于协议和数据格式的定义。
+
+---

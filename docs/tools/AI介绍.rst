@@ -29,7 +29,8 @@ WTF is AI
 
 .. figure:: assets/image-20240611115722-hz9nieb.png
    :align: center
-   :caption: *图片来源：Bryce Durbin / TechCrunch*
+   
+   *图片来源：Bryce Durbin / TechCrunch*
 
 对于被称为大型语言模型（LLM）的人工智能系统来说，这是一个非常恰当的比喻。
 
@@ -44,7 +45,8 @@ WTF is AI
 
 .. figure:: assets/image-20240611141924-27d0fvf.png
    :align: center
-   :caption: *图片来源：Bryce Durbin / TechCrunch*
+   
+   *图片来源：Bryce Durbin / TechCrunch*
 
 我们仍在学习人工智能能做什么和不能做什么——尽管概念已经很古老，但这项技术的大规模实施却非常新颖。
 
@@ -101,7 +103,8 @@ LLM 非常擅长快速创作低价值的书面作品。例如，一篇博客文�
 
 .. figure:: assets/image-20240611141910-00vdeck.png
    :align: center
-   :caption: *图片来源：Bryce Durbin / TechCrunch*
+   
+   *图片来源：Bryce Durbin / TechCrunch*
 
 Midjourney 和 DALL-E 等平台已经普及了人工智能驱动的图像生成，这也是语言模型的功劳。通过大大提高对语言和描述的理解，这些系统还可以接受训练，将单词和短语与图像内容联系起来。
 
