@@ -192,7 +192,7 @@ GNSS这块我不熟，但是用还是经常碰到，因此只从实际应用出�
 这个我们 GIS 要学的，还是最好学好的专业课，学好了路会更宽。计算机图形学其实还是计算机领域，变化挺快的，所以建议直接网上找点资料学，下面的资料算是比较新的，而且有些是纯理论，不会过时：
 
 1. `Games 101 <https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html>`_ ：这套课深入浅出，大佬讲课就是牛。三维里，计算机图形学是基础，因此尽量把这块学会。如果对游戏感兴趣，可以看看同系列的 Games 104 ,了解一下游戏引擎，里面的地形系统跟 GIS 里地形类似。
-2. `learn openGL 中文版 <https://learnopengl-cn.github.io>`_字面上的,学习 openGL ,包括环境搭建啥的，从基础学起。
+2. `learn openGL 中文版 <https://learnopengl-cn.github.io>`_  ：字面上的,学习 openGL ,包括环境搭建啥的，从基础学起。
 3. `OpenGL ES教程 <https://menco.space/tag/ZTXTOnB5t/>`__: 详细介绍 OpenGLES，包括 glsl 语言的，虽然每家 shader 写法不一样，但是大差不差。
 4. `The Book of Shaders <https://thebookofshaders.com/?lan=ch>`_：中文版的，OpenGL片段着色器教程，各种神奇的 shader 效果，就是从这些基础变化演化来的。
 
