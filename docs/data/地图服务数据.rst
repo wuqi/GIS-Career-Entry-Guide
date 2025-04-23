@@ -741,7 +741,7 @@ RESTful 风格示例
      </wps:ProcessSummary>
    </wps:Capabilities>
 
----
+------
 
 描述处理（DescribeProcess）:客户端请求特定处理的详细描述，包括输入参数和输出结果的定义。
 
@@ -786,7 +786,7 @@ RESTful 风格示例
      </wps:Output>
    </wps:ProcessDescription>
 
----
+------
 
 执行处理（Execute）:客户端提交处理请求，指定输入参数和输出格式。
 
@@ -828,7 +828,7 @@ RESTful 风格示例
      }
    }
 
----
+------
 
 WPS 的工作流程
 ----------------
