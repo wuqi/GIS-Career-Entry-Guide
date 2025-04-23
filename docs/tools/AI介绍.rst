@@ -6,6 +6,8 @@ WTF is AI
 WTF is AI
 ==================
 
+.. index:: AI
+
  原文地址 `techcrunch.com <https://techcrunch.com/2024/06/01/what-is-ai-how-does-ai-work/>`_ 。
 
  人工智能到底是什么？人工智能的最佳理解是，它是接近人类思维的软件。它与人类思维并不相同，也无所谓好坏，但即使是人类思维方式的粗略复制，也能帮助人们完成任务。但不要误以为它是真正的智能！
