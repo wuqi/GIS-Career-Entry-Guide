@@ -265,16 +265,29 @@ Linux 更关注文件 **内容** 和 **权限** ：
 
 .. mermaid::
 
-   timeline
-        title 计算机字符编码发展史
-        section 第一阶段 (1960s-1980s)
-            ASCII编码 : 只支持128个英文字符<br>奠定编码基础
-        section 第二阶段 (1980s-1990s)
-            字符编码本地化 : 各国制定自己的编码<br>ANSI系列编码
-            混乱时期 : 编码不互通<br>"乱码"问题频发
-        section 第三阶段 (1990s-现在)
-            Unicode诞生 : 统一全球字符编码
-            UTF-8普及 : 成为互联网标准<br>解决编码混乱
+   flowchart TD
+      A[计算机字符编码发展史] --> B
+      
+      subgraph B[第一阶段：1960s-1980s]
+         B1[ASCII编码<br>128个英文字符<br>奠定编码基础]
+      end
+      
+      B --> C
+      
+      subgraph C[第二阶段：1980s-1990s]
+         C1[字符编码本地化<br>各国制定自己的编码<br>ANSI系列编码]
+         C2[混乱时期<br>编码不互通<br>乱码问题频发]
+         C1 --> C2
+      end
+      
+      C --> D
+      
+      subgraph D[第三阶段：1990s-现在]
+         D1[Unicode诞生<br>统一全球字符编码]
+         D2[UTF-8普及<br>互联网标准<br>解决编码混乱]
+         D1 --> D2
+      end
+
 
 让我们深入这三个阶段，理解为什么需要从ASCII走向Unicode。
 
@@ -407,6 +420,7 @@ ASCII字符集共128个字符，分为两大区域：
 1. **控制字符区（0-31，0x00-0x1F）**
    - 设计初衷：控制电传打字机等设备
    - 重要控制字符:
+  
      - ``0x0A`` (LF): 换行（Line Feed）- 移到下一行
      - ``0x0D`` (CR): 回车（Carriage Return）- 回到行首
      - ``0x07`` (BEL): 响铃（Bell）- 发出声音提示
@@ -416,6 +430,7 @@ ASCII字符集共128个字符，分为两大区域：
    - 包含所有可见字符
    - 起始于空格（0x20）
    - 包含:
+    
      - 数字：0x30-0x39（'0'-'9'）
      - 大写字母：0x41-0x5A（'A'-'Z'）
      - 小写字母：0x61-0x7A（'a'-'z'）
@@ -558,16 +573,23 @@ ISO-8859是国际标准化组织的解决方案，包含16个子集：
 
 .. mermaid::
 
-   timeline
-        title 中文编码发展史
-        section 1980年
-            GB2312 : 6763个汉字<br>兼容ASCII
-        section 1984年
-            Big5 : 繁体中文标准<br>台湾香港使用
-        section 1995年
-            GBK : 扩展至21886字<br>兼容GB2312
-        section 2000年
-            GB18030 : 强制国家标准<br>70244汉字<br>变长编码
+   flowchart TD
+      A[中文编码发展史] --> B
+      
+      B[1980: GB2312<br>6763汉字，兼容ASCII] --> C
+      
+      C[1984: Big5<br>繁体中文标准，台港使用] --> D
+      
+      D[1995: GBK<br>21886汉字，兼容GB2312] --> E
+      
+      E[2000: GB18030<br>70244汉字，变长编码，强制国标]
+      
+      style A fill:#e1f5fe,stroke:#333,stroke-width:2px
+      style B fill:#f3e5f5,stroke:#333
+      style C fill:#e8f5e8,stroke:#333
+      style D fill:#fff3e0,stroke:#333
+      style E fill:#ffebee,stroke:#333
+
 
 **GB2312编码详解**
 
@@ -805,8 +827,8 @@ Unicode的关键创新： **字符集与编码分离**。
 - UTF-16有大小端两种存储方式
 - 需要BOM标记区分：
   
-  - 小端序：``0xFF 0xFE``（BOM）+ 数据
-  - 大端序：``0xFE 0xFF``（BOM）+ 数据
+  - 小端序： ``0xFF 0xFE`` （BOM）+ 数据
+  - 大端序： ``0xFE 0xFF`` （BOM）+ 数据
 
 3.4.6 UTF-32编码详解
 ^^^^^^^^^^^^^^^^^^^^
