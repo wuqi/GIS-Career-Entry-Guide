@@ -448,7 +448,7 @@ BMP文件整体结构
 
 如果您只需要理解概念，这里是伪代码版本:
 
-.. code-block:: pseudocode
+.. code-block:: 
 
    函数 读取BMP文件(文件名):
        以二进制模式打开文件
