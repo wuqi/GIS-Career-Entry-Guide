@@ -2,24 +2,27 @@
 地图服务
 ================
 
+.. contents:: 目录
+
+
 .. index:: 地图服务
 
 地图服务数据
 ================
 
-至少要了解一下Http协议，可以先看看《图解Http》那本书，xml可以看看 :ref:`xml` 中的内容，了解大概即可。本文参考 `地图服务数据 <https://www.cnblogs.com/ssjxx98/p/12531525.html>`_ 
+学习地图服务前，建议至少了解一下Http协议（可以看看《图解Http》这本书），以及XML的基本概念（参考 :ref:`xml` 部分）。本文主要参考 `地图服务数据 <https://www.cnblogs.com/ssjxx98/p/12531525.html>`_。
 
-地图服务主要有WMS、WFS、WCS、WPS、WMTS等：
+地图服务主要有以下几种：
 
-1. WMS：是一种 **动态地图** 服务，根据用户请求返回相应地图数据的可视化结果，实时切片，因此速度较慢。是 GeoServer 发布地图时较为常用的服务。
-2. WMTS：是一种采用 **预定义图块方法** 发布数字地图服务，将地图切分成瓦片矩阵集合，牺牲了提供定制地图的灵活性，代之以通过提供静态数据（基础地图）来增强伸缩性，这些静态数据的范围框和比例尺被限定在各个图块内，但是提升了服务速度。例如我国的天地图就是使用这一服务进行组织的，详情见另一篇博客： `关于天地图的瓦片下载 <https://www.cnblogs.com/ssjxx98/p/10877692.html>`_ 。
-3. WFS：是为了返回 **纯地理数据** 而设计的，它不包含任何关于绘制数据的建议，它提供了对矢量的 **增加、修改、删除** 等事务操作。
-4. WCS：是面向 **空间影像数据** 服务，它将包含地理位置值的地理空间数据作为 “ **栅格或者说 “覆盖”（Coverage）** ” 在网上相互交换。
-5. WPS：我理解的是一种提供和执行 **地理空间处理** 的服务，用于在 web 上发起空间运算操作。
-6. WMSC：是一种预先缓存数据的方法，以提升地图请求的速度。目前已被 WMTS 和 TMS 取代。
-7. TMS：也是一种瓦片地图服务，与 WMTS 类似，本质上遵循同样的切片规则。
+1. **WMS（Web Map Service）** ：一种**动态地图**服务，根据用户请求实时生成地图图像并返回。由于是实时切片，速度相对较慢，是GeoServer发布地图时常用的服务。
+2. **WMTS（Web Map Tile Service）** ：一种采用**预定义图块方法**发布数字地图的服务。它将地图预先切分成瓦片，虽然牺牲了提供定制地图的灵活性，但通过提供静态瓦片数据极大地提升了服务的响应速度和扩展性。例如我国的天地图就使用此服务，详情可见：`关于天地图的瓦片下载 <https://www.cnblogs.com/ssjxx98/p/10877692.html>`_。
+3. **WFS（Web Feature Service）** ：旨在返回**纯地理要素数据**（矢量数据），不包含任何绘制样式信息。它支持对要素进行**增、删、改**等事务操作。
+4. **WCS（Web Coverage Service）** ：面向**空间影像数据**（栅格数据）服务，它将包含地理位置信息的栅格数据作为“覆盖”（Coverage）在网上交换。
+5. **WPS（Web Processing Service）** ：一种提供和执行**地理空间处理**功能的服务，用于在Web端发起空间运算操作。
+6. **WMSC（Web Map Service - Cached）** ：一种通过预缓存数据来提升地图请求速度的方法，现已被WMTS和TMS取代。
+7. **TMS（Tile Map Service）** ：也是一种瓦片地图服务，本质上遵循与WMTS类似的切片规则。
 
-下面主要介绍常用的几种服务，以及切片方案：
+下面将主要介绍几种常用服务及其切片方案：
 
 1. :ref:`wms`
 2. :ref:`wmts`
@@ -33,7 +36,7 @@
 WMS 服务
 ++++++++++++
 
-WMS（Web Map Service，网络地图服务）是由开放地理空间联盟（OGC，Open Geospatial Consortium）制定的一项标准，用于通过互联网动态生成和提供地理空间数据的地图图像。WMS 标准定义了一套基于 HTTP 的接口，允许客户端请求地图图像，并支持多种地图图层、样式和坐标参考系统的组合。
+WMS（Web Map Service，网络地图服务）是由开放地理空间联盟（OGC）制定的一项标准，用于通过互联网动态生成和提供地理空间数据的地图图像。WMS 标准定义了一套基于 HTTP 的接口，允许客户端请求地图图像，并支持多种地图图层、样式和坐标参考系统的组合。
 
 WMS 标准的主要目标是实现地理空间数据的互操作性，使得不同来源的地图服务能够在统一的框架下被访问和使用。
 
@@ -42,32 +45,32 @@ WMS 标准的主要目标是实现地理空间数据的互操作性，使得不�
 
 WMS 标准自发布以来经历了多个版本的更新，主要包括：
 
-- **WMS 1.0.0**：初始版本，发布于 2000 年。
-- **WMS 1.1.0**：发布于 2001 年，增加了对 SLD（Styled Layer Descriptor）的支持。
-- **WMS 1.1.1**：发布于 2002 年，修复了一些错误并进行了小的改进。
-- **WMS 1.3.0**：发布于 2004 年，是目前最广泛使用的版本，支持更多的坐标参考系统和功能。
+* **WMS 1.0.0** ：初始版本，发布于 2000 年。
+* **WMS 1.1.0** ：发布于 2001 年，增加了对 SLD（Styled Layer Descriptor）的支持。
+* **WMS 1.1.1** ：发布于 2002 年，修复了一些错误并进行了小的改进。
+* **WMS 1.3.0** ：发布于 2004 年，是目前最广泛使用的版本，支持更多的坐标参考系统和功能。
 
 核心功能
 ------------
 
 WMS 标准定义了三种主要的操作：
 
-1. **GetCapabilities**
-2. **GetMap**
-3. **GetFeatureInfo**
+#. **GetCapabilities**
+#. **GetMap**
+#. **GetFeatureInfo**
 
 GetCapabilities
 ~~~~~~~~~~~~~~~~~
 
 **GetCapabilities** 操作用于获取 WMS 服务的元数据信息，包括支持的地图图层、坐标参考系统、请求格式等。客户端可以通过该操作了解服务的功能和可用资源。
 
-请求示例：
+**请求示例：**
 
 .. code-block:: text
 
    http://example.com/wms?service=WMS&version=1.3.0&request=GetCapabilities
 
-响应示例：
+**响应示例：**
 
 .. code-block:: xml
 
@@ -96,28 +99,27 @@ GetMap
 
 **GetMap** 操作用于请求地图图像。客户端可以指定地图的图层、样式、范围、大小和格式等参数。
 
-请求示例：
+**请求示例：**
 
 .. code-block:: text
 
    http://example.com/wms?service=WMS&version=1.3.0&request=GetMap&layers=base_layer&styles=default&CRS=EPSG:4326&BBOX=-180,-90,180,90&width=800&height=600&format=image/png
 
-响应示例：
-
-返回的地图图像（PNG、JPEG 等格式）。
+**响应示例：**
+   返回的地图图像（PNG、JPEG 等格式）。
 
 GetFeatureInfo
 ~~~~~~~~~~~~~~
 
 **GetFeatureInfo** 操作用于查询地图上特定位置的要素信息。客户端可以指定查询的图层、位置和返回信息的格式。
 
-请求示例：
+**请求示例：**
 
 .. code-block:: text
 
    http://example.com/wms?service=WMS&version=1.3.0&request=GetFeatureInfo&layers=base_layer&query_layers=base_layer&CRS=EPSG:4326&BBOX=-180,-90,180,90&width=800&height=600&x=400&y=300&info_format=text/plain
 
-响应示例：
+**响应示例：**
 
 .. code-block:: text
 
@@ -128,10 +130,10 @@ GetFeatureInfo
 坐标参考系统
 ------------
 
-WMS 标准支持多种坐标参考系统（CRS，Coordinate Reference System），常见的包括：
+WMS 标准支持多种坐标参考系统（CRS），常见的包括：
 
-- **EPSG:4326**：WGS84 经纬度坐标系。
-- **EPSG:3857**：Web Mercator 投影，常用于 Web 地图服务。
+* **EPSG:4326** ：WGS84 经纬度坐标系。
+* **EPSG:3857** ：Web Mercator 投影，常用于 Web 地图服务。
 
 图层和样式
 ----------
@@ -148,18 +150,18 @@ WMS 标准的互操作性使得不同来源的地图服务能够在统一的框�
 
 WMS 标准广泛应用于以下场景：
 
-- **Web 地图服务**：提供动态生成的地图图像，支持多种图层和样式的组合。
-- **地理信息系统（GIS）**：作为 GIS 数据源，支持空间数据的可视化和查询。
-- **科学研究和教育**：用于地理空间数据的共享和展示。
+* **Web 地图服务** ：提供动态生成的地图图像，支持多种图层和样式的组合。
+* **地理信息系统（GIS）** ：作为 GIS 数据源，支持空间数据的可视化和查询。
+* **科学研究和教育** ：用于地理空间数据的共享和展示。
 
 相关标准
 --------
 
 WMS 标准与其他 OGC 标准密切相关，包括：
 
-- **WFS（Web Feature Service）**：用于提供地理空间要素数据。
-- **WCS（Web Coverage Service）**：用于提供地理空间覆盖数据。
-- **SLD（Styled Layer Descriptor）**：用于定义地图图层的样式。
+* **WFS（Web Feature Service）** ：用于提供地理空间要素数据。
+* **WCS（Web Coverage Service）** ：用于提供地理空间覆盖数据。
+* **SLD（Styled Layer Descriptor）** ：用于定义地图图层的样式。
 
 总结
 ----
@@ -169,16 +171,16 @@ WMS 标准是地理空间数据共享和互操作的重要基础，通过定义�
 参考文献
 --------
 
-- `OGC WMS 标准文档 <https://www.opengeospatial.org/standards/wms>`_
-- `WMS 1.3.0 规范 <https://portal.opengeospatial.org/files/?artifact_id=14416>`_
-- `OGC 官方网站 <https://www.opengeospatial.org/>`_
+* `OGC WMS 标准文档 <https://www.opengeospatial.org/standards/wms>`_
+* `WMS 1.3.0 规范 <https://portal.opengeospatial.org/files/?artifact_id=14416>`_
+* `OGC 官方网站 <https://www.opengeospatial.org/>`_
 
 .. _wmts:
 
 WMTS 服务
 ++++++++++++++
 
-WMTS（Web Map Tile Service，网络地图瓦片服务）是由开放地理空间联盟（OGC，Open Geospatial Consortium）制定的一项标准，用于通过互联网提供预先生成的地图瓦片。WMTS 标准定义了一套基于 HTTP 的接口，允许客户端请求地图瓦片，并支持多种地图图层、样式和坐标参考系统的组合。
+WMTS（Web Map Tile Service，网络地图瓦片服务）是由开放地理空间联盟（OGC）制定的一项标准，用于通过互联网提供预先生成的地图瓦片。WMTS 标准定义了一套基于 HTTP 的接口，允许客户端请求地图瓦片，并支持多种地图图层、样式和坐标参考系统的组合。
 
 WMTS 标准的主要目标是提高地图服务的性能和可扩展性，通过使用预先生成的地图瓦片来减少服务器端的计算负载。
 
@@ -187,29 +189,29 @@ WMTS 标准的主要目标是提高地图服务的性能和可扩展性，通过
 
 WMTS 标准自发布以来经历了多个版本的更新，主要包括：
 
-- **WMTS 1.0.0**：初始版本，发布于 2010 年。
+* **WMTS 1.0.0** ：初始版本，发布于 2010 年。
 
 核心功能
 --------
 
 WMTS 标准定义了三种主要的操作：
 
-1. **GetCapabilities**
-2. **GetTile**
-3. **GetFeatureInfo**
+#. **GetCapabilities**
+#. **GetTile**
+#. **GetFeatureInfo**
 
 GetCapabilities
 ~~~~~~~~~~~~~~~
 
 **GetCapabilities** 操作用于获取 WMTS 服务的元数据信息，包括支持的地图图层、坐标参考系统、请求格式等。客户端可以通过该操作了解服务的功能和可用资源。
 
-请求示例：
+**请求示例：**
 
 .. code-block:: text
 
    http://example.com/wmts?service=WMTS&version=1.0.0&request=GetCapabilities
 
-响应示例：
+**响应示例：**
 
 .. code-block:: xml
 
@@ -254,28 +256,27 @@ GetTile
 
 **GetTile** 操作用于请求地图瓦片。客户端可以指定地图的图层、样式、瓦片矩阵集、瓦片行列号和格式等参数。
 
-请求示例：
+**请求示例：**
 
 .. code-block:: text
 
    http://example.com/wmts?service=WMTS&version=1.0.0&request=GetTile&layer=base_layer&style=default&format=image/png&TileMatrixSet=EPSG:3857&TileMatrix=0&TileRow=0&TileCol=0
 
-响应示例：
-
-返回的地图瓦片图像（PNG、JPEG 等格式）。
+**响应示例：**
+   返回的地图瓦片图像（PNG、JPEG 等格式）。
 
 GetFeatureInfo
 ~~~~~~~~~~~~~~
 
 **GetFeatureInfo** 操作用于查询地图瓦片上特定位置的要素信息。客户端可以指定查询的图层、位置和返回信息的格式。
 
-请求示例：
+**请求示例：**
 
 .. code-block:: text
 
    http://example.com/wmts?service=WMTS&version=1.0.0&request=GetFeatureInfo&layer=base_layer&style=default&format=image/png&TileMatrixSet=EPSG:3857&TileMatrix=0&TileRow=0&TileCol=0&I=128&J=128&info_format=text/plain
 
-响应示例：
+**响应示例：**
 
 .. code-block:: text
 
@@ -286,10 +287,10 @@ GetFeatureInfo
 坐标参考系统
 ------------
 
-WMTS 标准支持多种坐标参考系统（CRS，Coordinate Reference System），常见的包括：
+WMTS 标准支持多种坐标参考系统（CRS），常见的包括：
 
-- **EPSG:4326**：WGS84 经纬度坐标系。
-- **EPSG:3857**：Web Mercator 投影，常用于 Web 地图服务。
+* **EPSG:4326** ：WGS84 经纬度坐标系。
+* **EPSG:3857** ：Web Mercator 投影，常用于 Web 地图服务。
 
 瓦片矩阵集
 ----------
@@ -306,18 +307,18 @@ WMTS 标准的互操作性使得不同来源的地图服务能够在统一的框
 
 WMTS 标准广泛应用于以下场景：
 
-- **Web 地图服务**：提供预先生成的地图瓦片，支持快速加载和高性能显示。
-- **地理信息系统（GIS）**：作为 GIS 数据源，支持空间数据的可视化和查询。
-- **科学研究和教育**：用于地理空间数据的共享和展示。
+* **Web 地图服务** ：提供预先生成的地图瓦片，支持快速加载和高性能显示。
+* **地理信息系统（GIS）** ：作为 GIS 数据源，支持空间数据的可视化和查询。
+* **科学研究和教育** ：用于地理空间数据的共享和展示。
 
 相关标准
 --------
 
 WMTS 标准与其他 OGC 标准密切相关，包括：
 
-- **WMS（Web Map Service）**：用于提供动态生成的地图图像。
-- **WFS（Web Feature Service）**：用于提供地理空间要素数据。
-- **WCS（Web Coverage Service）**：用于提供地理空间覆盖数据。
+* **WMS（Web Map Service）** ：用于提供动态生成的地图图像。
+* **WFS（Web Feature Service）** ：用于提供地理空间要素数据。
+* **WCS（Web Coverage Service）** ：用于提供地理空间覆盖数据。
 
 总结
 ----
@@ -327,74 +328,72 @@ WMTS 标准是地理空间数据共享和互操作的重要基础，通过定义
 参考文献
 --------
 
-- `OGC WMTS 标准文档 <https://www.opengeospatial.org/standards/wmts>`_
-- `WMTS 1.0.0 规范 <https://portal.opengeospatial.org/files/?artifact_id=35326>`_
-- `OGC 官方网站 <https://www.opengeospatial.org/>`_
+* `OGC WMTS 标准文档 <https://www.opengeospatial.org/standards/wmts>`_
+* `WMTS 1.0.0 规范 <https://portal.opengeospatial.org/files/?artifact_id=35326>`_
+* `OGC 官方网站 <https://www.opengeospatial.org/>`_
 
 .. _tms:
 
 TMS 服务
 +++++++++++
 
-TMS（Tile Map Service，瓦片地图服务）是一种用于提供地图瓦片的网络服务标准，由开源空间信息基金会（OSGeo）定义。它主要用于将地图数据切分为瓦片（通常是256x256像素的图片），并通过网络提供给客户端使用。TMS服务广泛应用于Web地图服务中，支持高效的地图加载和显示。TMS通常用 RESTful 实现，RESTful API 设计请参考 `RESTful API 最佳实践 <https://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html>`_ .
-
+TMS（Tile Map Service，瓦片地图服务）是一种用于提供地图瓦片的网络服务标准，由开源空间信息基金会（OSGeo）定义。它主要用于将地图数据切分为瓦片（通常是256x256像素的图片），并通过网络提供给客户端使用。
 
 TMS服务通过将地图数据切分为多个瓦片（Tile），并按层级（Zoom Level）、行（Row）和列（Column）组织，实现地图的高效加载和显示。每个瓦片是一个独立的图片文件，客户端可以根据需要请求特定的瓦片，从而减少数据传输量并提高地图加载速度。
 
-- **瓦片组织方式**：TMS采用四叉树分割方式，将地图按层级切分为多个瓦片。每个层级的地图分辨率不同，层级越高，瓦片数量越多，地图细节越丰富。
-- **坐标原点**：TMS的坐标原点通常位于地图的左下角，与WMTS（Web Map Tile Service）的左上角原点不同。
+主要特性：
 
-TMS服务具有以下特点：
-- **RESTful接口**：TMS服务通常采用 RESTful 风格的URL结构，便于客户端请求特定瓦片。
-- **瓦片格式**：瓦片通常为正方形（如256x256像素），支持多种图片格式（如PNG、JPEG）。
-- **层级与瓦片编号**：每个瓦片通过层级（Zoom Level）、行（Row）和列（Column）唯一标识。层级表示地图的缩放级别，行和列表示瓦片在地图上的位置。
+* **瓦片组织方式** ：TMS采用四叉树分割方式，将地图按层级切分为多个瓦片。每个层级的地图分辨率不同，层级越高，瓦片数量越多，地图细节越丰富。
+* **坐标原点** ：TMS的坐标原点通常位于地图的**左下角**，与WMTS（Web Map Tile Service）的**左上角**原点不同。
+* **RESTful接口** ：TMS服务通常采用 RESTful 风格的URL结构，便于客户端请求特定瓦片。RESTful API 设计请参考 `RESTful API 最佳实践 <https://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html>`_。
+* **瓦片格式** ：瓦片通常为正方形（如256x256像素），支持多种图片格式（如PNG、JPEG）。
+* **层级与瓦片编号** ：每个瓦片通过层级（Zoom Level）、列（X）和行（Y）唯一标识。层级表示地图的缩放级别，列和行表示瓦片在地图上的位置。
 
-TMS与WMTS（Web Map Tile Service）是两种常见的瓦片地图服务标准，它们的主要区别如下：
-- **接口类型**：TMS是纯RESTful接口，而WMTS支持KVP（Key-Value Pair）、SOAP和RESTful三种接口。
-- **坐标原点**：TMS的坐标原点在左下角，而WMTS的坐标原点在左上角。
-- **瓦片形状**：TMS瓦片通常是正方形，而WMTS瓦片可以是矩形。
+TMS与WMTS的区别：
+
+* **接口类型** ：TMS是纯RESTful接口，而WMTS支持KVP（Key-Value Pair）、SOAP和RESTful三种接口。
+* **坐标原点** ：TMS的坐标原点在左下角，而WMTS的坐标原点在左上角。
+* **瓦片形状** ：TMS瓦片通常是正方形，而WMTS瓦片可以是矩形。
 
 TMS服务广泛应用于以下场景：
-- **Web地图服务**：通过TMS服务提供地图瓦片，支持高效的地图加载和显示。
-- **地理信息系统（GIS）**：作为GIS数据源，支持空间数据的可视化和查询。
-- **移动地图应用**：通过TMS服务提供离线地图瓦片，支持移动设备的地图显示。
 
-TMS服务的URL通常包含以下参数：
-- **层级（Zoom Level）**：表示地图的缩放级别。
-- **行（Row）和列（Column）**：表示瓦片在地图上的位置。
-- **瓦片格式**：指定瓦片的图片格式（如PNG、JPEG）。
+* **Web地图服务** ：通过TMS服务提供地图瓦片，支持高效的地图加载和显示。
+* **地理信息系统（GIS）** ：作为GIS数据源，支持空间数据的可视化和查询。
+* **移动地图应用** ：通过TMS服务提供离线地图瓦片，支持移动设备的地图显示。
 
-示例URL：
-```
-http://example.com/tms/1.0.0/{layer}/{z}/{x}/{y}.png
-```
+URL示例：
+
+.. code-block:: text
+
+   http://example.com/tms/1.0.0/{layer}/{z}/{x}/{y}.png
+
 其中：
-- `{layer}`：地图图层名称。
-- `{z}`：层级（Zoom Level）。
-- `{x}`：列（Column）。
-- `{y}`：行（Row）。
 
-TMS服务的优势
-- **高效加载**：通过预先生成的瓦片，减少服务器端的计算压力。
-- **灵活性强**：支持多种地图图层和样式组合。
-- **兼容性好**：与多种GIS软件和Web地图应用程序兼容。
+* ``{layer}``：地图图层名称。
+* ``{z}``：层级（Zoom Level）。
+* ``{x}``：列（Column）。
+* ``{y}``：行（Row）。
+
+TMS服务的优势：
+
+* **高效加载** ：通过预先生成的瓦片，减少服务器端的计算压力。
+* **灵活性强** ：支持多种地图图层和样式组合。
+* **兼容性好** ：与多种GIS软件和Web地图应用程序兼容。
 
 总结
 ---------------
 
 TMS服务是一种高效、灵活的地图瓦片服务标准，广泛应用于Web地图服务、GIS和移动地图应用中。通过预先生成的地图瓦片，TMS服务能够显著提高地图加载速度，并降低服务器端的计算压力。与WMTS相比，TMS服务具有更简单的RESTful接口和更灵活的瓦片组织方式，适用于多种地图应用场景。
 
-
 .. _wfs:
 
 WFS 服务
 ++++++++
 
-
 概述
 ----
 
-WFS（Web Feature Service，网络要素服务）是由开放地理空间联盟（OGC，Open Geospatial Consortium）制定的一项标准，用于通过互联网提供地理空间要素数据。WFS 标准定义了一套基于 HTTP 的接口，允许客户端请求、查询、编辑和操作地理空间要素数据。
+WFS（Web Feature Service，网络要素服务）是由开放地理空间联盟（OGC）制定的一项标准，用于通过互联网提供地理空间要素数据（即矢量数据）。WFS 标准定义了一套基于 HTTP 的接口，允许客户端请求、查询、编辑和操作地理空间要素数据。
 
 WFS 标准的主要目标是实现地理空间要素数据的互操作性，使得不同来源的要素服务能够在统一的框架下被访问和使用。
 
@@ -403,31 +402,31 @@ WFS 标准的主要目标是实现地理空间要素数据的互操作性，使�
 
 WFS 标准自发布以来经历了多个版本的更新，主要包括：
 
-- **WFS 1.0.0**：初始版本，发布于 2002 年。
-- **WFS 1.1.0**：发布于 2005 年，增加了对事务操作的支持。
-- **WFS 2.0.0**：发布于 2010 年，是目前最广泛使用的版本，支持更多的功能和扩展。
+* **WFS 1.0.0** ：初始版本，发布于 2002 年。
+* **WFS 1.1.0** ：发布于 2005 年，增加了对事务操作的支持。
+* **WFS 2.0.0** ：发布于 2010 年，是目前最广泛使用的版本，支持更多的功能和扩展。
 
 核心功能
 --------
 
 WFS 标准定义了三种主要的操作：
 
-1. **GetCapabilities**
-2. **DescribeFeatureType**
-3. **GetFeature**
+#. **GetCapabilities**
+#. **DescribeFeatureType**
+#. **GetFeature**
 
 GetCapabilities
 ~~~~~~~~~~~~~~~
 
 **GetCapabilities** 操作用于获取 WFS 服务的元数据信息，包括支持的要素类型、操作、请求格式等。客户端可以通过该操作了解服务的功能和可用资源。
 
-请求示例：
+**请求示例：**
 
 .. code-block:: text
 
    http://example.com/wfs?service=WFS&version=2.0.0&request=GetCapabilities
 
-响应示例：
+**响应示例：**
 
 .. code-block:: xml
 
@@ -453,13 +452,13 @@ DescribeFeatureType
 
 **DescribeFeatureType** 操作用于获取要素类型的结构信息，包括要素的属性字段和数据类型。客户端可以通过该操作了解要素类型的详细结构。
 
-请求示例：
+**请求示例：**
 
 .. code-block:: text
 
    http://example.com/wfs?service=WFS&version=2.0.0&request=DescribeFeatureType&typeName=feature_type
 
-响应示例：
+**响应示例：**
 
 .. code-block:: xml
 
@@ -484,13 +483,13 @@ GetFeature
 
 **GetFeature** 操作用于请求要素数据。客户端可以指定要素类型、过滤条件、返回格式等参数。
 
-请求示例：
+**请求示例：**
 
 .. code-block:: text
 
    http://example.com/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=feature_type&outputFormat=application/json
 
-响应示例：
+**响应示例：**
 
 .. code-block:: json
 
@@ -515,18 +514,14 @@ GetFeature
 事务操作
 --------
 
-WFS 标准还支持事务操作，允许客户端对要素数据进行插入、更新和删除操作。事务操作包括：
-
-1. **Insert**
-2. **Update**
-3. **Delete**
+WFS 标准还支持事务操作（Transaction），允许客户端对要素数据进行插入（Insert）、更新（Update）和删除（Delete）操作。
 
 Insert
 ~~~~~~
 
 **Insert** 操作用于插入新的要素数据。
 
-请求示例：
+**请求示例：**
 
 .. code-block:: xml
 
@@ -544,7 +539,7 @@ Insert
      </wfs:Insert>
    </wfs:Transaction>
 
-响应示例：
+**响应示例：**
 
 .. code-block:: xml
 
@@ -564,7 +559,7 @@ Update
 
 **Update** 操作用于更新现有的要素数据。
 
-请求示例：
+**请求示例：**
 
 .. code-block:: xml
 
@@ -580,7 +575,7 @@ Update
      </wfs:Update>
    </wfs:Transaction>
 
-响应示例：
+**响应示例：**
 
 .. code-block:: xml
 
@@ -595,7 +590,7 @@ Delete
 
 **Delete** 操作用于删除现有的要素数据。
 
-请求示例：
+**请求示例：**
 
 .. code-block:: xml
 
@@ -607,7 +602,7 @@ Delete
      </wfs:Delete>
    </wfs:Transaction>
 
-响应示例：
+**响应示例：**
 
 .. code-block:: xml
 
@@ -620,10 +615,10 @@ Delete
 坐标参考系统
 ------------
 
-WFS 标准支持多种坐标参考系统（CRS，Coordinate Reference System），常见的包括：
+WFS 标准支持多种坐标参考系统（CRS），常见的包括：
 
-- **EPSG:4326**：WGS84 经纬度坐标系。
-- **EPSG:3857**：Web Mercator 投影，常用于 Web 地图服务。
+* **EPSG:4326** ：WGS84 经纬度坐标系。
+* **EPSG:3857** ：Web Mercator 投影，常用于 Web 地图服务。
 
 互操作性
 --------
@@ -635,18 +630,18 @@ WFS 标准的互操作性使得不同来源的要素服务能够在统一的框�
 
 WFS 标准广泛应用于以下场景：
 
-- **Web 要素服务**：提供地理空间要素数据，支持要素的查询、编辑和操作。
-- **地理信息系统（GIS）**：作为 GIS 数据源，支持空间数据的可视化和查询。
-- **科学研究和教育**：用于地理空间数据的共享和展示。
+* **Web 要素服务** ：提供地理空间要素数据，支持要素的查询、编辑和操作。
+* **地理信息系统（GIS）** ：作为 GIS 数据源，支持空间数据的可视化和查询。
+* **科学研究和教育** ：用于地理空间数据的共享和展示。
 
 相关标准
 --------
 
 WFS 标准与其他 OGC 标准密切相关，包括：
 
-- **WMS（Web Map Service）**：用于提供动态生成的地图图像。
-- **WMTS（Web Map Tile Service）**：用于提供预先生成的地图瓦片。
-- **GML（Geography Markup Language）**：用于编码地理空间要素数据。
+* **WMS（Web Map Service）** ：用于提供动态生成的地图图像。
+* **WMTS（Web Map Tile Service）** ：用于提供预先生成的地图瓦片。
+* **GML（Geography Markup Language）** ：用于编码地理空间要素数据。
 
 总结
 ----
@@ -656,9 +651,9 @@ WFS 标准是地理空间要素数据共享和互操作的重要基础，通过�
 参考文献
 --------
 
-- `OGC WFS 标准文档 <https://www.opengeospatial.org/standards/wfs>`_
-- `WFS 2.0.0 规范 <https://portal.opengeospatial.org/files/?artifact_id=39967>`_
-- `OGC 官方网站 <https://www.opengeospatial.org/>`_
+* `OGC WFS 标准文档 <https://www.opengeospatial.org/standards/wfs>`_
+* `WFS 2.0.0 规范 <https://portal.opengeospatial.org/files/?artifact_id=39967>`_
+* `OGC 官方网站 <https://www.opengeospatial.org/>`_
 
 .. _wps:
 
@@ -666,57 +661,56 @@ WPS 服务
 ++++++++++
 
 概述
-----------------
+----
 
-OGC（Open Geospatial Consortium，开放地理空间联盟）的 **WPS（Web Processing Service，网络处理服务）** 标准是一种用于在网络上发布、执行和访问地理空间处理服务的规范。WPS 允许客户端通过标准的 HTTP 请求调用远程的地理空间处理功能，例如空间分析、数据转换、模型计算等。
+OGC（开放地理空间联盟）的 **WPS（Web Processing Service，网络处理服务）** 标准是一种用于在网络上发布、执行和访问地理空间处理服务的规范。WPS 允许客户端通过标准的 HTTP 请求调用远程的地理空间处理功能，例如空间分析、数据转换、模型计算等。
 
 WPS 的主要目标是提供一种标准化的方式，使得不同的地理信息系统（GIS）能够通过 Web 服务进行复杂的地理空间处理任务的互操作。
 
 版本历史
-----------------
+--------
 
-- **WPS 1.0.0**: 2007年发布，是 WPS 的第一个版本。
-- **WPS 2.0.0**: 2015年发布，增加了对 RESTful 接口的支持，并改进了异步处理和复杂数据类型的支持。
+* **WPS 1.0.0** ：2007年发布，是 WPS 的第一个版本。
+* **WPS 2.0.0** ：2015年发布，增加了对 RESTful 接口的支持，并改进了异步处理和复杂数据类型的支持。
 
 核心概念
-----------------
+--------
 
-1. **处理（Process）**
+处理（Process）
+~~~~~~~~~~~~~~~~
+  处理是 WPS 的核心概念，表示一个可执行的地理空间处理任务。每个处理都有一个唯一的标识符（Identifier），并定义了输入参数、输出结果以及执行的逻辑。例如，一个处理可以是“缓冲区分析”，输入是一个几何对象和缓冲区距离，输出是缓冲区的几何结果。
 
-   - 处理是 WPS 的核心概念，表示一个可执行的地理空间处理任务。
-   - 每个处理都有一个唯一的标识符（Identifier），并定义了输入参数、输出结果以及执行的逻辑。
-   - 例如，一个处理可以是“缓冲区分析”，输入是一个几何对象和缓冲区距离，输出是缓冲区的几何结果。
+输入和输出（Inputs and Outputs）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  每个处理都定义了输入参数和输出结果。输入和输出可以是简单数据类型（如字符串、数字）或复杂数据类型（如几何对象、栅格数据）。输入和输出的格式可以通过 WPS 的描述文档进行定义。
 
-2. **输入和输出（Inputs and Outputs）**
+操作（Operations）
+~~~~~~~~~~~~~~~~~~
+  WPS 定义了一系列标准操作，用于与处理服务进行交互：
 
-   - 每个处理都定义了输入参数和输出结果。
-   - 输入和输出可以是简单数据类型（如字符串、数字）或复杂数据类型（如几何对象、栅格数据）。
-   - 输入和输出的格式可以通过 WPS 的描述文档进行定义。
+  * **GetCapabilities** ：获取服务的元数据，包括支持的处理列表、支持的输入输出格式等。
+  * **DescribeProcess** ：获取特定处理的详细描述，包括输入参数和输出结果的详细信息。
+  * **Execute** ：执行一个处理任务，并返回处理结果。
 
-3. **操作（Operations）**
+执行模式（Execution Modes）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  WPS 支持两种执行模式：
 
-   - WPS 定义了一系列标准操作，用于与处理服务进行交互：
-     - **GetCapabilities**: 获取服务的元数据，包括支持的处理列表、支持的输入输出格式等。
-     - **DescribeProcess**: 获取特定处理的详细描述，包括输入参数和输出结果的详细信息。
-     - **Execute**: 执行一个处理任务，并返回处理结果。
+  * **同步执行（Synchronous Execution）** ：客户端发送请求后，等待处理完成并立即返回结果。
+  * **异步执行（Asynchronous Execution）** ：客户端发送请求后，服务端返回一个任务标识符，客户端可以稍后查询任务状态和结果。
 
-4. **执行模式（Execution Modes）**
-
-   - WPS 支持两种执行模式：
-     - **同步执行（Synchronous Execution）**: 客户端发送请求后，等待处理完成并立即返回结果。
-     - **异步执行（Asynchronous Execution）**: 客户端发送请求后，服务端返回一个任务标识符，客户端可以稍后查询任务状态和结果。
-
-5. **复杂数据类型（Complex Data）**
-
-   - WPS 支持复杂数据类型的输入和输出，例如 GML（Geography Markup Language）格式的几何数据、GeoTIFF 格式的栅格数据等。
-   - 复杂数据可以通过引用（Reference）或内嵌（Inline）的方式传递。
+复杂数据类型（Complex Data）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  WPS 支持复杂数据类型的输入和输出，例如 GML（Geography Markup Language）格式的几何数据、GeoTIFF 格式的栅格数据等。复杂数据可以通过引用（Reference）或内嵌（Inline）的方式传递。
 
 RESTful 风格示例
-------------------------
+----------------
 
 以下是使用 RESTful 风格与 WPS 服务交互的示例。
 
-获取服务能力（GetCapabilities）:客户端请求服务的元数据，了解支持的处理列表和输入输出格式。
+获取服务能力（GetCapabilities）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+客户端请求服务的元数据，了解支持的处理列表和输入输出格式。
 
 **HTTP GET 请求示例：**
 
@@ -742,9 +736,9 @@ RESTful 风格示例
      </wps:ProcessSummary>
    </wps:Capabilities>
 
-------
-
-描述处理（DescribeProcess）:客户端请求特定处理的详细描述，包括输入参数和输出结果的定义。
+描述处理（DescribeProcess）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+客户端请求特定处理的详细描述，包括输入参数和输出结果的定义。
 
 **HTTP GET 请求示例：**
 
@@ -787,9 +781,9 @@ RESTful 风格示例
      </wps:Output>
    </wps:ProcessDescription>
 
-------
-
-执行处理（Execute）:客户端提交处理请求，指定输入参数和输出格式。
+执行处理（Execute）
+~~~~~~~~~~~~~~~~~~~~
+客户端提交处理请求，指定输入参数和输出格式。
 
 **HTTP POST 请求示例：**
 
@@ -829,157 +823,123 @@ RESTful 风格示例
      }
    }
 
-------
-
 WPS 的工作流程
-----------------
+--------------
 
-1. **发现服务能力**
-   - 客户端通过 **GetCapabilities** 操作获取 WPS 服务的元数据，了解服务支持的处理列表和输入输出格式。
-
-2. **描述处理**
-   - 客户端通过 **DescribeProcess** 操作获取特定处理的详细描述，包括输入参数和输出结果的定义。
-
-3. **执行处理**
-
-   - 客户端通过 **Execute** 操作提交处理请求，指定输入参数和输出格式。
-   - 服务端执行处理任务，并返回处理结果。
-
-4. **获取结果**
-
-   - 对于同步执行，处理结果直接返回给客户端。
-   - 对于异步执行，客户端需要通过任务标识符查询任务状态，并在任务完成后获取结果。
+#. **发现服务能力**
+   客户端通过 **GetCapabilities** 操作获取 WPS 服务的元数据，了解服务支持的处理列表和输入输出格式。
+#. **描述处理**
+   客户端通过 **DescribeProcess** 操作获取特定处理的详细描述，包括输入参数和输出结果的定义。
+#. **执行处理**
+   客户端通过 **Execute** 操作提交处理请求，指定输入参数和输出格式。服务端执行处理任务，并返回处理结果。
+#. **获取结果**
+   对于同步执行，处理结果直接返回给客户端。对于异步执行，客户端需要通过任务标识符查询任务状态，并在任务完成后获取结果。
 
 WPS 的优势
-----------------
+----------
 
-1. **标准化**
-   - WPS 提供了一种标准化的方式，使得不同的 GIS 系统可以通过 Web 服务进行地理空间处理任务的互操作。
-
-2. **灵活性**
-   - WPS 支持复杂数据类型的输入和输出，能够处理各种地理空间数据。
-
-3. **可扩展性**
-   - WPS 允许用户自定义处理任务，满足特定的地理空间分析需求。
-
-4. **分布式计算**
-   - WPS 支持异步执行模式，适合处理耗时的计算任务，并支持分布式计算环境。
+* **标准化** ：WPS 提供了一种标准化的方式，使得不同的 GIS 系统可以通过 Web 服务进行地理空间处理任务的互操作。
+* **灵活性** ：WPS 支持复杂数据类型的输入和输出，能够处理各种地理空间数据。
+* **可扩展性** ：WPS 允许用户自定义处理任务，满足特定的地理空间分析需求。
+* **分布式计算** ：WPS 支持异步执行模式，适合处理耗时的计算任务，并支持分布式计算环境。
 
 WPS 的应用场景
-------------------------
+--------------
 
-1. **空间分析**
-   - 例如缓冲区分析、叠加分析、路径分析等。
-
-2. **数据转换**
-   - 例如将矢量数据转换为栅格数据，或将 GML 格式转换为 GeoJSON 格式。
-
-3. **模型计算**
-   - 例如水文模型、气候模型等复杂的地理空间模型计算。
-
-4. **自动化处理**
-   - 例如批量处理遥感影像、自动化生成地图等。
+* **空间分析** ：例如缓冲区分析、叠加分析、路径分析等。
+* **数据转换** ：例如将矢量数据转换为栅格数据，或将 GML 格式转换为 GeoJSON 格式。
+* **模型计算** ：例如水文模型、气候模型等复杂的地理空间模型计算。
+* **自动化处理** ：例如批量处理遥感影像、自动化生成地图等。
 
 总结
---------
+----
 
 OGC WPS 标准为地理空间处理任务的发布、执行和访问提供了一种标准化的 Web 服务接口。通过 WPS，用户可以在分布式环境中调用复杂的地理空间处理功能，实现高效的地理空间数据分析和处理。WPS 的灵活性、可扩展性和标准化特性使其成为地理信息系统中不可或缺的一部分。
-
 
 .. _cuttile:
 
 切片方案
 +++++++++++
 
-
 地图切片是将地图数据分割成小块（瓦片）以便快速加载和显示的技术。以下是几种常见的地图切片方案：
 
 XYZ 切片方案
-------------------------
-
-- **描述**: XYZ 是最常见的地图切片方案，广泛应用于 Google Maps、OpenStreetMap 等地图服务。
-- **切片规则**:
-  - X: 经度方向上的切片索引
-  - Y: 纬度方向上的切片索引
-  - Z: 缩放级别
-- **URL 示例**: ``https://tile.openstreetmap.org/{z}/{x}/{y}.png``
+------------
+* **描述** ：XYZ 是最常见的地图切片方案，广泛应用于 Google Maps、OpenStreetMap 等地图服务。
+* **切片规则** ：
+   * X：经度方向上的切片索引
+   * Y：纬度方向上的切片索引
+   * Z：缩放级别
+* **URL 示例** ：``https://tile.openstreetmap.org/{z}/{x}/{y}.png``
 
 TMS (Tile Map Service) 切片方案
-------------------------------------------------
-
-- **描述**: TMS 是另一种常见的地图切片方案，与 XYZ 类似，但 Y 轴的坐标方向相反。
-- **切片规则**:
-  - X: 经度方向上的切片索引
-  - Y: 纬度方向上的切片索引（从下往上）
-  - Z: 缩放级别
-- **URL 示例**: ``https://tile.example.com/{z}/{x}/{y}.png``
+-------------------------------
+* **描述** ：TMS 是另一种常见的地图切片方案，与 XYZ 类似，但 Y 轴的坐标方向相反（从下往上）。
+* **切片规则** ：
+   * X：经度方向上的切片索引
+   * Y：纬度方向上的切片索引（从下往上）
+   * Z：缩放级别
+* **URL 示例** ：``https://tile.example.com/{z}/{x}/{y}.png``
 
 WMTS (Web Map Tile Service) 切片方案
-------------------------------------------------
-
-- **描述**: WMTS 是一种标准化的地图切片服务，支持多种切片方案和坐标系统。
-- **切片规则**:
-  - TileMatrix: 缩放级别
-  - TileRow: 纬度方向上的切片索引
-  - TileCol: 经度方向上的切片索引
-- **URL 示例**: ``https://wmts.example.com/{TileMatrix}/{TileRow}/{TileCol}.png``
+------------------------------------
+* **描述** ：WMTS 是一种标准化的地图切片服务，支持多种切片方案和坐标系统。
+* **切片规则** ：
+   * TileMatrix：缩放级别
+   * TileRow：纬度方向上的切片索引
+   * TileCol：经度方向上的切片索引
+* **URL 示例** ：``https://wmts.example.com/{TileMatrix}/{TileRow}/{TileCol}.png``
 
 QuadTree 切片方案
-------------------------------------------------
-
-- **描述**: QuadTree 是一种基于四叉树的切片方案，常用于 Bing Maps。
-- **切片规则**:
-  - 每个切片被递归地分成四个子切片
-  - 使用字符串表示切片位置，如 "0123"
-- **URL 示例**: ``https://tile.bing.com/{quadkey}.png``
+-----------------
+* **描述** ：QuadTree 是一种基于四叉树的切片方案，常用于 Bing Maps。
+* **切片规则** ：
+   * 每个切片被递归地分成四个子切片
+   * 使用字符串表示切片位置，如 "0123"
+* **URL 示例** ：``https://tile.bing.com/{quadkey}.png``
 
 Slippy Map 切片方案
-------------------------------------------------
-
-- **描述**: Slippy Map 是 OpenStreetMap 使用的切片方案，与 XYZ 类似。
-- **切片规则**:
-  - X: 经度方向上的切片索引
-  - Y: 纬度方向上的切片索引
-  - Z: 缩放级别
-- **URL 示例**: ``https://tile.openstreetmap.org/{z}/{x}/{y}.png``
+-------------------
+* **描述** ：Slippy Map 是 OpenStreetMap 使用的切片方案，与 XYZ 类似。
+* **切片规则** ：
+   * X：经度方向上的切片索引
+   * Y：纬度方向上的切片索引
+   * Z：缩放级别
+* **URL 示例** ：``https://tile.openstreetmap.org/{z}/{x}/{y}.png``
 
 Google Maps 切片方案
-------------------------
-
-- **描述**: Google Maps 使用自定义的切片方案，基于 Mercator 投影。
-- **切片规则**:
-  - X: 经度方向上的切片索引
-  - Y: 纬度方向上的切片索引
-  - Z: 缩放级别
-- **URL 示例**: ``https://mt.google.com/vt/lyrs=m&x={x}&y={y}&z={z}``
+--------------------
+* **描述** ：Google Maps 使用自定义的切片方案，基于 Mercator 投影。
+* **切片规则** ：
+   * X：经度方向上的切片索引
+   * Y：纬度方向上的切片索引
+   * Z：缩放级别
+* **URL 示例** ：``https://mt.google.com/vt/lyrs=m&x={x}&y={y}&z={z}``
 
 Baidu Maps 切片方案
-------------------------
-
-- **描述**: 百度地图使用自定义的切片方案，基于百度墨卡托投影。
-- **切片规则**:
-  - X: 经度方向上的切片索引
-  - Y: 纬度方向上的切片索引
-  - Z: 缩放级别
-- **URL 示例**: ``https://maponline.bdimg.com/tile/?qt=tile&x={x}&y={y}&z={z}``
+-------------------
+* **描述** ：百度地图使用自定义的切片方案，基于百度墨卡托投影。
+* **切片规则** ：
+   * X：经度方向上的切片索引
+   * Y：纬度方向上的切片索引
+   * Z：缩放级别
+* **URL 示例** ：``https://maponline.bdimg.com/tile/?qt=tile&x={x}&y={y}&z={z}``
 
 Gaode Maps 切片方案
-------------------------
-
-- **描述**: 高德地图使用自定义的切片方案，基于 Web Mercator 投影。
-- **切片规则**:
-  - X: 经度方向上的切片索引
-  - Y: 纬度方向上的切片索引
-  - Z: 缩放级别
-- **URL 示例**: ``https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}``
+-------------------
+* **描述** ：高德地图使用自定义的切片方案，基于 Web Mercator 投影。
+* **切片规则** ：
+   * X：经度方向上的切片索引
+   * Y：纬度方向上的切片索引
+   * Z：缩放级别
+* **URL 示例** ：``https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}``
 
 总结
-------------------------
+----
 
 不同的地图服务提供商可能使用不同的切片方案，选择合适的切片方案对于地图数据的加载和显示至关重要。常见的切片方案包括 XYZ、TMS、WMTS、QuadTree 等，每种方案都有其特定的切片规则和 URL 格式。
 
 参考链接
-------------------------
+--------
 
-- `CSDN 博客 <https://blog.csdn.net/qq_37987033/article/details/127638206>`_
-
+* `CSDN 博客 <https://blog.csdn.net/qq_37987033/article/details/127638206>`_

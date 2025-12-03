@@ -6,10 +6,11 @@
 
 .. toctree::
    :maxdepth: 2
+   :titlesonly:
    :caption: Contents:
 
    数据
-   文本文件和二进制文件
+   文件
    数据交换格式
    矢量数据
    栅格数据
