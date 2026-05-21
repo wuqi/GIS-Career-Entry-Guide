@@ -148,7 +148,7 @@ GIS
 
 1. 《Introduction To Geographic-information-systems》：最新好像是第九版,可能有更新的，有这本可以把课本扔了，课本里有的这里面都有，还更详细，武大那本该有的都有，但是太粗了。这本讲的很细致，包括一部分栅格数据处理和TIN的处理，整体结构也更科学一些。如果你已经学完了专业课，也可以把这本当工具书用，基本处理这上面都有。这本书通读还是要挺久的，但是不算什么硬骨头，建议还是全部看一下。
 2. 《GIS Fundamentals: A First Text on Geographic Information Systems》：这本大部头更全面，包括坐标系，投影，地球椭球，制图，垂直参考系，RS，GNSS 之类的都讲了，基本上 3S 涉及到的知识点都有，练习也很多，代价是几乎比上一本厚了一倍，不过这本排版比较宽，也没有那么多字，其实读起来也还行。
-3. `地图投影 <https://wuqi.github.io/Map_Projection/#/>`_ :我整理出来机翻的，这套东西图文并茂，公式推导虽然有，但是也挺简单的，如果课本里的上看不进去，可以看看这个。
+3. `地图投影 <https://github.com/wuqi/Map_Projection/releases/download/v1.0/map_projection.pdf>`_ :我整理出来机翻的，这套东西图文并茂，公式推导虽然有，但是也挺简单的，如果课本里的上看不进去，可以看看这个。
 4. 《Map projections A working manual》：这本是正经介绍地图投影的，从概念，常用投影，投影历史，推导方式讲下去。
 5. 《Elementary Statistics For Geographers》：针对地理的基础统计，主要是讲统计方法的，讲可视化，采样，时间空间统计方式。
 6. `Headfirst GDAL <https://headfirst-gdal.readthedocs.io/en/latest/index.html>`_ ：我写的，gdal库简介，c++ 版本的，学 gis 搞开发必要掌握的技能之一。
